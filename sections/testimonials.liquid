@@ -1,0 +1,93 @@
+<section class="py-20 bg-gray-50">
+  <div class="container mx-auto px-4">
+    <h2 class="text-3xl font-bold text-center mb-16">{{ section.settings.heading }}</h2>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {% for block in section.blocks %}
+        <div class="bg-white p-6 rounded-lg shadow-md" {{ block.shopify_attributes }}>
+          <div class="flex mb-4">
+            {% for i in (1..5) %}
+              {% render 'icon-star' %}
+            {% endfor %}
+          </div>
+          <p class="text-gray-600 mb-4">{{ block.settings.testimonial }}</p>
+          <div class="flex items-center">
+            {% if block.settings.author_image %}
+              <img 
+                src="{{ block.settings.author_image | img_url: '100x' }}" 
+                alt="{{ block.settings.author_name }}"
+                class="w-10 h-10 rounded-full object-cover mr-3"
+              >
+            {% endif %}
+            <div>
+              <p class="font-semibold">{{ block.settings.author_name }}</p>
+              {% if block.settings.author_location %}
+                <p class="text-sm text-gray-500">{{ block.settings.author_location }}</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "What Our Customers Say"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "testimonial",
+          "label": "Testimonial Text",
+          "default": "I turned my first skateboard into a lamp—now it's the centerpiece of my room!"
+        },
+        {
+          "type": "text",
+          "id": "author_name",
+          "label": "Author Name",
+          "default": "Alex T."
+        },
+        {
+          "type": "text",
+          "id": "author_location",
+          "label": "Author Location",
+          "default": "California, USA"
+        },
+        {
+          "type": "image_picker",
+          "id": "author_image",
+          "label": "Author Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        },
+        {
+          "type": "testimonial"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,57 @@
+{% if section.settings.show_announcement %}
+  <div class="bg-primary text-white px-4 py-2" x-data="{ show: true }" x-show="show">
+    <div class="container mx-auto flex items-center justify-center">
+      <div class="text-center flex-1">
+        {% if section.settings.announcement_link != blank %}
+          <a href="{{ section.settings.announcement_link }}" class="text-sm font-medium hover:underline">
+            {{ section.settings.announcement_text }}
+          </a>
+        {% else %}
+          <p class="text-sm font-medium">{{ section.settings.announcement_text }}</p>
+        {% endif %}
+      </div>
+      {% if section.settings.show_close %}
+        <button @click="show = false" class="ml-4" aria-label="Close">
+          {% render 'icon-close' %}
+        </button>
+      {% endif %}
+    </div>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Announcement Bar",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_announcement",
+      "label": "Show announcement",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "label": "Announcement text",
+      "default": "Free shipping on all orders over $100!"
+    },
+    {
+      "type": "url",
+      "id": "announcement_link",
+      "label": "Announcement link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_close",
+      "label": "Show close button",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Announcement Bar",
+      "category": "Promotional"
+    }
+  ]
+}
+{% endschema %}

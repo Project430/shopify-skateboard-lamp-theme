@@ -1,0 +1,134 @@
+<section class="py-16 bg-gray-50">
+  <div class="container mx-auto px-4">
+    <div class="max-w-4xl mx-auto">
+      <div class="flex items-center justify-center mb-6">
+        {% render 'icon-shield-check' %}
+      </div>
+      <h2 class="text-3xl font-bold text-center mb-4">{{ section.settings.heading }}</h2>
+      <p class="text-xl text-gray-600 text-center mb-12">{{ section.settings.description }}</p>
+      
+      <div class="grid md:grid-cols-2 gap-8">
+        {% for block in section.blocks %}
+          <div class="bg-white p-6 rounded-lg shadow-sm" {{ block.shopify_attributes }}>
+            <div class="flex items-start mb-4">
+              {% case block.settings.icon %}
+                {% when 'check' %}
+                  {% render 'icon-check-circle' %}
+                {% when 'lightning' %}
+                  {% render 'icon-lightning' %}
+                {% when 'lock' %}
+                  {% render 'icon-lock' %}
+                {% when 'shield' %}
+                  {% render 'icon-shield' %}
+              {% endcase %}
+              <div class="ml-4">
+                <h3 class="text-lg font-semibold mb-2">{{ block.settings.title }}</h3>
+                <p class="text-gray-600">{{ block.settings.description }}</p>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Safety Features",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Safe. Simple. Smart."
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "With Lightwheel, you can rest assured knowing your skateboard lamp is crafted with high-quality, tested components that prioritize safety."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Safety Feature",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            {
+              "value": "check",
+              "label": "Check Circle"
+            },
+            {
+              "value": "lightning",
+              "label": "Lightning"
+            },
+            {
+              "value": "lock",
+              "label": "Lock"
+            },
+            {
+              "value": "shield",
+              "label": "Shield"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Safety Features",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "check",
+            "title": "Quality Tested",
+            "description": "Every component undergoes rigorous testing for reliability and safety."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "lightning",
+            "title": "Energy Efficient",
+            "description": "LED bulbs stay cool to the touch and use minimal power."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "lock",
+            "title": "Secure Installation",
+            "description": "Mounting hardware ensures your lamp stays safely on the wall."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "shield",
+            "title": "ETL Certified",
+            "description": "Meets or exceeds all required safety standards."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

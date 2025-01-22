@@ -1,0 +1,185 @@
+<footer class="bg-gray-900 text-white py-12">
+  <div class="container mx-auto px-4">
+    <div class="grid md:grid-cols-4 gap-8">
+      <div>
+        <h3 class="font-bold text-lg mb-4">{{ section.settings.company_name }}</h3>
+        <p class="text-gray-400">{{ section.settings.company_description }}</p>
+        {% if section.settings.show_social_links %}
+          <div class="mt-4 flex space-x-4">
+            {% if section.settings.facebook_link != blank %}
+              <a href="{{ section.settings.facebook_link }}" target="_blank" rel="noopener" class="text-gray-400 hover:text-white">
+                {% render 'icon-facebook' %}
+              </a>
+            {% endif %}
+            {% if section.settings.instagram_link != blank %}
+              <a href="{{ section.settings.instagram_link }}" target="_blank" rel="noopener" class="text-gray-400 hover:text-white">
+                {% render 'icon-instagram' %}
+              </a>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+      
+      <div>
+        <h4 class="font-bold mb-4">{{ section.settings.menu_title }}</h4>
+        <ul class="space-y-2">
+          {% for link in section.settings.footer_menu.links %}
+            <li>
+              <a href="{{ link.url }}" class="text-gray-400 hover:text-white">{{ link.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+      
+      {% if section.settings.show_contact %}
+        <div>
+          <h4 class="font-bold mb-4">Contact</h4>
+          {% if section.settings.contact_email != blank %}
+            <p class="text-gray-400 mb-2">
+              {{ section.settings.contact_email }}
+            </p>
+          {% endif %}
+          {% if section.settings.contact_phone != blank %}
+            <p class="text-gray-400">
+              {{ section.settings.contact_phone }}
+            </p>
+          {% endif %}
+        </div>
+      {% endif %}
+      
+      {% if section.settings.show_newsletter %}
+        <div>
+          <h4 class="font-bold mb-4">{{ section.settings.newsletter_title }}</h4>
+          <p class="text-gray-400 mb-4">{{ section.settings.newsletter_text }}</p>
+          {% form 'customer' %}
+            <div class="flex">
+              <input 
+                type="email" 
+                name="contact[email]" 
+                placeholder="Your email"
+                class="flex-1 px-4 py-2 rounded-l-lg text-gray-900"
+                required
+              >
+              <button type="submit" class="bg-primary px-4 py-2 rounded-r-lg hover:bg-opacity-90">
+                Subscribe
+              </button>
+            </div>
+          {% endform %}
+        </div>
+      {% endif %}
+    </div>
+    
+    <div class="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400">
+      <p>{{ section.settings.copyright_text }}</p>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "company_name",
+      "label": "Company Name",
+      "default": "Lightwheel"
+    },
+    {
+      "type": "textarea",
+      "id": "company_description",
+      "label": "Company Description",
+      "default": "Transform your memories into light."
+    },
+    {
+      "type": "header",
+      "content": "Menu Settings"
+    },
+    {
+      "type": "text",
+      "id": "menu_title",
+      "label": "Menu Title",
+      "default": "Quick Links"
+    },
+    {
+      "type": "link_list",
+      "id": "footer_menu",
+      "label": "Footer Menu",
+      "default": "footer"
+    },
+    {
+      "type": "header",
+      "content": "Contact Information"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_contact",
+      "label": "Show Contact Information",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "contact_email",
+      "label": "Contact Email"
+    },
+    {
+      "type": "text",
+      "id": "contact_phone",
+      "label": "Contact Phone"
+    },
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "Show Newsletter Signup",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "newsletter_title",
+      "label": "Newsletter Title",
+      "default": "Stay Updated"
+    },
+    {
+      "type": "textarea",
+      "id": "newsletter_text",
+      "label": "Newsletter Text",
+      "default": "Subscribe to get updates about new products and special offers."
+    },
+    {
+      "type": "header",
+      "content": "Social Links"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social_links",
+      "label": "Show Social Links",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "facebook_link",
+      "label": "Facebook Link"
+    },
+    {
+      "type": "url",
+      "id": "instagram_link",
+      "label": "Instagram Link"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright Text",
+      "default": "© 2024 Lightwheel. All rights reserved."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer"
+    }
+  ]
+}
+{% endschema %}

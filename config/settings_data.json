@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "current": {
     "primary_color": "#166A60",
@@ -16,7 +25,7 @@
       "header": {
         "type": "header",
         "settings": {
-          "logo": "",
+          "logo": "shopify://shop_images/NEW_logo_V3_64e1505d-7a77-4296-a504-e1a35d9a23ed.png",
           "menu": "main-menu"
         }
       },
@@ -28,14 +37,130 @@
           "menu_title": "Quick Links",
           "footer_menu": "footer",
           "show_contact": true,
+          "contact_email": "",
+          "contact_phone": "",
           "show_newsletter": true,
           "newsletter_title": "Stay Updated",
           "newsletter_text": "Subscribe to get updates about new products and special offers.",
           "show_social_links": true,
+          "facebook_link": "",
+          "instagram_link": "",
           "copyright_text": "© 2024 Lightwheel. All rights reserved."
         }
+      },
+      "announcement-bar": {
+        "type": "announcement-bar",
+        "settings": {
+          "show_announcement": true,
+          "announcement_text": "Free shipping on all orders over $100!",
+          "announcement_link": "",
+          "show_close": true
+        }
+      },
+      "features": {
+        "type": "features",
+        "settings": {}
+      },
+      "how-it-works": {
+        "type": "how-it-works",
+        "settings": {
+          "heading": "How It Works"
+        }
+      },
+      "product-cta": {
+        "type": "product-cta",
+        "settings": {
+          "heading": "Ready to Transform Your Board?",
+          "price": "$79.90",
+          "price_subtext": "Includes FREE Shipping!",
+          "button_text": "Get Your Kit Now",
+          "button_link": "",
+          "show_compare_at_price": true,
+          "image_left": "shopify://shop_images/IMG_9674.jpg",
+          "image_right": "shopify://shop_images/IMG_5749.jpg"
+        }
+      },
+      "safety": {
+        "type": "safety",
+        "settings": {
+          "heading": "Safe. Simple. Smart.",
+          "description": "With Lightwheel, you can rest assured knowing your skateboard lamp is crafted with high-quality, tested components that prioritize safety."
+        }
+      },
+      "faq": {
+        "type": "faq",
+        "blocks": {
+          "faq_LyKdFt": {
+            "type": "faq",
+            "settings": {
+              "question": "How safe are the light kits?",
+              "answer": "Our Lightwheel light kits are designed with safety as a top priority. From energy-efficient LED bulbs that stay cool to the touch to robust, insulated connectors that eliminate the risk of shocks, every component has been engineered for reliability and peace of mind. Plus, all kits are tested extensively before shipping."
+            }
+          },
+          "faq_rnFcTj": {
+            "type": "faq",
+            "settings": {
+              "question": "Why can't I just build my own skateboard lamp?",
+              "answer": "While DIY projects can be enjoyable, our kits are crafted to eliminate the challenges and risks involved:\n\n• Quick Setup: Install in just 5 minutes, no complex tools required.\n• Safe Materials: High-quality ceramic bulb holders, textile cables, and secure mounting hardware.\n• Non-Permanent Design: Easily switch between boards without damage.\n• Cost-Effective: Sourcing parts individually often costs more than our all-in-one solution."
+            }
+          }
+        },
+        "block_order": [
+          "faq_LyKdFt",
+          "faq_rnFcTj"
+        ],
+        "settings": {
+          "heading": "Frequently Asked Questions"
+        }
+      },
+      "testimonials": {
+        "type": "testimonials",
+        "blocks": {
+          "testimonial_etPV6N": {
+            "type": "testimonial",
+            "settings": {
+              "testimonial": "I turned my first skateboard into a lamp—now it's the centerpiece of my room!",
+              "author_name": "Alex T.",
+              "author_location": "California, USA"
+            }
+          },
+          "testimonial_QNKanM": {
+            "type": "testimonial",
+            "settings": {
+              "testimonial": "I turned my first skateboard into a lamp—now it's the centerpiece of my room!",
+              "author_name": "Alex T.",
+              "author_location": "California, USA"
+            }
+          },
+          "testimonial_pXN9ap": {
+            "type": "testimonial",
+            "settings": {
+              "testimonial": "I turned my first skateboard into a lamp—now it's the centerpiece of my room!",
+              "author_name": "Alex T.",
+              "author_location": "California, USA"
+            }
+          }
+        },
+        "block_order": [
+          "testimonial_etPV6N",
+          "testimonial_QNKanM",
+          "testimonial_pXN9ap"
+        ],
+        "settings": {
+          "heading": "What Our Customers Say"
+        }
+      },
+      "hero": {
+        "type": "hero",
+        "settings": {
+          "heading": "Convert YOUR Skateboard deck into a Lamp in 5 Minutes!",
+          "subheading": "Transform Memories into a Glowing Masterpiece.",
+          "button_text": "Shop Now",
+          "button_link": ""
+        }
       }
-    }
+    },
+    "content_for_index": []
   },
   "presets": {
     "Default": {

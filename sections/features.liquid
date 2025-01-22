@@ -1,0 +1,94 @@
+<section class="py-20 bg-white">
+  <div class="container mx-auto px-4">
+    <div class="grid md:grid-cols-3 gap-8">
+      {% for block in section.blocks %}
+        <div class="text-center space-y-4" {{ block.shopify_attributes }}>
+          {% case block.settings.icon %}
+            {% when 'clock' %}
+              {% render 'icon-clock' %}
+            {% when 'recycle' %}
+              {% render 'icon-recycle' %}
+            {% when 'heart' %}
+              {% render 'icon-heart' %}
+          {% endcase %}
+          <h3 class="text-xl font-semibold">{{ block.settings.title }}</h3>
+          <p class="text-gray-600">{{ block.settings.description }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Features",
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            {
+              "value": "clock",
+              "label": "Clock"
+            },
+            {
+              "value": "recycle",
+              "label": "Recycle"
+            },
+            {
+              "value": "heart",
+              "label": "Heart"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Features",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "clock",
+            "title": "Easy to Install",
+            "description": "5-minute install setup using your board's original holes."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "recycle",
+            "title": "Sustainable",
+            "description": "Upcycle your old skateboard into a functional piece of art."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "heart",
+            "title": "Personalized",
+            "description": "Your memories, your design, your light."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

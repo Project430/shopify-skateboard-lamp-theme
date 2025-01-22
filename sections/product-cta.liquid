@@ -1,0 +1,113 @@
+<section class="py-20 bg-primary text-white">
+  <div class="container mx-auto px-4">
+    <div class="grid md:grid-cols-3 gap-8 items-center">
+      <div class="hidden md:block aspect-square">
+        {% if section.settings.image_left %}
+          <img
+            src="{{ section.settings.image_left | img_url: 'master' }}"
+            alt="{{ section.settings.image_left.alt }}"
+            class="w-full h-full object-cover rounded-lg shadow-lg opacity-90"
+          >
+        {% endif %}
+      </div>
+      <div class="text-center">
+        <h2 class="text-3xl md:text-4xl font-bold mb-8">{{ section.settings.heading }}</h2>
+        <div class="mb-8">
+          {% if product %}
+            <p class="text-3xl font-bold mb-2">{{ product.price | money }}</p>
+            {% if section.settings.show_compare_at_price and product.compare_at_price > product.price %}
+              <p class="text-xl line-through opacity-75">{{ product.compare_at_price | money }}</p>
+            {% endif %}
+          {% else %}
+            <p class="text-3xl font-bold mb-2">{{ section.settings.price }}</p>
+          {% endif %}
+          <p class="text-xl">{{ section.settings.price_subtext }}</p>
+        </div>
+        {% if product %}
+          <form method="post" action="/cart/add" class="flex flex-col items-center space-y-4">
+            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+            <button type="submit" class="bg-white text-primary px-8 py-4 rounded-lg text-lg font-semibold inline-flex items-center hover:bg-opacity-90 transition-colors">
+              {{ section.settings.button_text }}
+              {% render 'icon-chevron-right' %}
+            </button>
+          </form>
+        {% else %}
+          <a href="{{ section.settings.button_link }}" class="bg-white text-primary px-8 py-4 rounded-lg text-lg font-semibold inline-flex items-center hover:bg-opacity-90 transition-colors">
+            {{ section.settings.button_text }}
+            {% render 'icon-chevron-right' %}
+          </a>
+        {% endif %}
+      </div>
+      <div class="hidden md:block aspect-square">
+        {% if section.settings.image_right %}
+          <img
+            src="{{ section.settings.image_right | img_url: 'master' }}"
+            alt="{{ section.settings.image_right.alt }}"
+            class="w-full h-full object-cover rounded-lg shadow-lg opacity-90"
+          >
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product CTA",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Ready to Transform Your Board?"
+    },
+    {
+      "type": "text",
+      "id": "price",
+      "label": "Price",
+      "default": "$79.90",
+      "info": "Only used if no product is selected"
+    },
+    {
+      "type": "text",
+      "id": "price_subtext",
+      "label": "Price Subtext",
+      "default": "Includes FREE Shipping!"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Get Your Kit Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link",
+      "info": "Only used if no product is selected"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_compare_at_price",
+      "label": "Show Compare at Price",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "image_left",
+      "label": "Left Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_right",
+      "label": "Right Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product CTA",
+      "category": "Custom Sections"
+    }
+  ]
+}
+{% endschema %}

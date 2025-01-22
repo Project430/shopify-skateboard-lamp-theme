@@ -31,7 +31,10 @@ async function scrapeEtsyReviews(shopUrl) {
   });
 
   await browser.close();
-  return reviews;
+
+  // Filter for only 4+ star reviews
+  const highRatedReviews = reviews.filter(review => review.rating >= 4);
+  return highRatedReviews;
 }
 
 // Function to format reviews for Shopify
@@ -44,7 +47,8 @@ function formatForShopify(reviews) {
       author_location: review.location,
       rating: review.rating,
       date: review.date,
-      review_image_url: review.imageUrl
+      review_image_url: review.imageUrl,
+      verified: true // All Etsy reviews are verified
     }
   }));
 }
@@ -54,15 +58,17 @@ async function main() {
   try {
     // Replace with your Etsy shop URL
     const shopUrl = process.env.ETSY_SHOP_URL;
-    console.log('Fetching reviews from:', shopUrl);
+    console.log('Fetching 4+ star reviews from:', shopUrl);
 
     const reviews = await scrapeEtsyReviews(shopUrl);
+    console.log(`Found ${reviews.length} reviews with 4+ stars`);
+
     const formattedReviews = formatForShopify(reviews);
 
     // Output the formatted reviews as JSON
     console.log(JSON.stringify(formattedReviews, null, 2));
 
-    // Also save to a file
+    // Save to a file
     const fs = require('fs');
     fs.writeFileSync('etsy-reviews.json', JSON.stringify(formattedReviews, null, 2));
     console.log('Reviews saved to etsy-reviews.json');
@@ -70,6 +76,25 @@ async function main() {
   } catch (error) {
     console.error('Error:', error);
   }
+}
+
+// Add ability to load multiple pages of reviews
+async function loadAllReviews(shopUrl, maxPages = 5) {
+  let allReviews = [];
+  for (let page = 1; page <= maxPages; page++) {
+    const pageUrl = `${shopUrl}/reviews?page=${page}`;
+    const pageReviews = await scrapeEtsyReviews(pageUrl);
+    
+    // If no reviews found on this page, we've reached the end
+    if (pageReviews.length === 0) break;
+    
+    allReviews = allReviews.concat(pageReviews);
+    console.log(`Loaded page ${page}: Found ${pageReviews.length} reviews`);
+    
+    // Short delay between pages to be nice to Etsy's servers
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  }
+  return allReviews;
 }
 
 main();

@@ -52,7 +52,7 @@
         "type": "announcement-bar",
         "settings": {
           "show_announcement": true,
-          "announcement_text": "Free shipping on all orders over $100!",
+          "announcement_text": "Free shipping on all orders over $70!",
           "announcement_link": "",
           "show_close": true
         }

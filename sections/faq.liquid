@@ -9,21 +9,23 @@
             @click="open = !open"
           >
             {{ block.settings.question }}
-            <span x-show="!open" class="text-primary">
-              {% render 'icon-plus' %}
-            </span>
-            <span x-show="open" class="text-primary">
-              {% render 'icon-minus' %}
-            </span>
+            <svg 
+              class="h-5 w-5 text-primary transform transition-transform duration-200"
+              :class="{'rotate-180': open}"
+              xmlns="http://www.w3.org/2000/svg" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
           </button>
           <div 
-            x-show="open" 
+            x-show="open"
+            x-cloak
             x-transition:enter="transition ease-out duration-200"
             x-transition:enter-start="opacity-0 transform -translate-y-2"
             x-transition:enter-end="opacity-100 transform translate-y-0"
-            x-transition:leave="transition ease-in duration-150"
-            x-transition:leave-start="opacity-100 transform translate-y-0"
-            x-transition:leave-end="opacity-0 transform -translate-y-2"
             class="px-6 py-4 border-t border-gray-200"
           >
             <p class="text-gray-600 whitespace-pre-line">{{ block.settings.answer }}</p>
@@ -53,12 +55,14 @@
         {
           "type": "text",
           "id": "question",
-          "label": "Question"
+          "label": "Question",
+          "default": "How safe are the light kits?"
         },
         {
           "type": "textarea",
           "id": "answer",
-          "label": "Answer"
+          "label": "Answer",
+          "default": "Our light kits are designed with safety as a top priority. Every component undergoes thorough testing and meets all safety standards."
         }
       ]
     }
@@ -71,14 +75,14 @@
           "type": "faq",
           "settings": {
             "question": "How safe are the light kits?",
-            "answer": "Our Lightwheel light kits are designed with safety as a top priority. From energy-efficient LED bulbs that stay cool to the touch to robust, insulated connectors that eliminate the risk of shocks, every component has been engineered for reliability and peace of mind. Plus, all kits are tested extensively before shipping."
+            "answer": "Our light kits are designed with safety as a top priority. Every component undergoes thorough testing and meets all safety standards."
           }
         },
         {
           "type": "faq",
           "settings": {
-            "question": "Why can't I just build my own skateboard lamp?",
-            "answer": "While DIY projects can be enjoyable, our kits are crafted to eliminate the challenges and risks involved:\n\n• Quick Setup: Install in just 5 minutes, no complex tools required.\n• Safe Materials: High-quality ceramic bulb holders, textile cables, and secure mounting hardware.\n• Non-Permanent Design: Easily switch between boards without damage.\n• Cost-Effective: Sourcing parts individually often costs more than our all-in-one solution."
+            "question": "How long does installation take?",
+            "answer": "Installation typically takes about 5 minutes using your board's existing holes. No special tools required!"
           }
         }
       ]

@@ -1,0 +1,50 @@
+{
+  "current": {
+    "primary_color": "#166A60",
+    "secondary_color": "#4A5568",
+    "text_color": "#2D3748",
+    "background_color": "#FFFFFF",
+    "heading_font": "Inter",
+    "body_font": "Inter",
+    "social_facebook_link": "",
+    "social_instagram_link": "",
+    "social_twitter_link": "",
+    "contact_email": "support@lightwheellamps.com",
+    "contact_phone": "",
+    "contact_address": "",
+    "sections": {
+      "header": {
+        "type": "header",
+        "settings": {
+          "logo": "",
+          "menu": "main-menu"
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {
+          "company_name": "Lightwheel",
+          "company_description": "Transform your memories into light.",
+          "menu_title": "Quick Links",
+          "footer_menu": "footer",
+          "show_contact": true,
+          "show_newsletter": true,
+          "newsletter_title": "Stay Updated",
+          "newsletter_text": "Subscribe to get updates about new products and special offers.",
+          "show_social_links": true,
+          "copyright_text": "© 2024 Lightwheel. All rights reserved."
+        }
+      }
+    }
+  },
+  "presets": {
+    "Default": {
+      "primary_color": "#166A60",
+      "secondary_color": "#4A5568",
+      "text_color": "#2D3748",
+      "background_color": "#FFFFFF",
+      "heading_font": "Inter",
+      "body_font": "Inter"
+    }
+  }
+}

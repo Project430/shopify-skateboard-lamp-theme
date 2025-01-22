@@ -1,0 +1,26 @@
+<div class="min-h-[60vh] flex items-center justify-center bg-gray-50">
+  <div class="max-w-md mx-auto px-4 py-16 text-center">
+    <h1 class="text-4xl font-bold mb-4">404 Page Not Found</h1>
+    <p class="text-gray-600 mb-8">The page you were looking for does not exist. You may have mistyped the address or the page may have moved.</p>
+    
+    <div class="space-y-4">
+      <a href="/" class="inline-block bg-primary text-white px-6 py-3 rounded-lg hover:bg-opacity-90 transition-colors">
+        Return to Home
+      </a>
+      
+      <form action="/search" method="get" class="mt-8">
+        <div class="flex gap-2">
+          <input
+            type="text"
+            name="q"
+            placeholder="Search..."
+            class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+          >
+          <button type="submit" class="bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
+            Search
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

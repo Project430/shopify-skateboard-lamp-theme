@@ -99,8 +99,8 @@
             "type": "step",
             "settings": {
               "step_number": 1,
-              "title": "Prep Your Board",
-              "description": "Clean and gather your worn deck."
+              "title": "Get Your Deck Ready",
+              "description": "Remove wheels and trucks"
             }
           },
           "step_BDrVJY": {
@@ -108,7 +108,7 @@
             "settings": {
               "step_number": 2,
               "title": "Install the Kit",
-              "description": "Attach using the original holes."
+              "description": "Insert the cables through your deck's holes"
             }
           },
           "step_tDTFJJ": {
@@ -177,30 +177,13 @@
       },
       "testimonials": {
         "type": "testimonials",
-        "blocks": {
-          "testimonial_QNKanM": {
-            "type": "testimonial",
-            "settings": {
-              "rating": 5,
-              "date": "",
-              "testimonial": "I turned my first skateboard into a lamp—now it's the centerpiece of my room!",
-              "author_name": "Alex T.",
-              "author_location": "California, USA",
-              "review_image_url": "",
-              "verified": true
-            }
-          }
-        },
-        "block_order": [
-          "testimonial_QNKanM"
-        ],
         "settings": {
           "heading": "What Our Customers Say",
           "subheading": "See what our customers are saying about us on Etsy",
-          "show_etsy_logo": true,
-          "show_etsy_source": true,
+          "show_etsy_logo": false,
+          "show_etsy_source": false,
           "show_all_reviews_link": true,
-          "reviews_link": ""
+          "reviews_link": "https://lightwheel.fr/products/quattro-skateboard-light-kit"
         }
       },
       "hero": {

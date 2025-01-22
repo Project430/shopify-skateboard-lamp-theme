@@ -59,10 +59,72 @@
       },
       "features": {
         "type": "features",
+        "blocks": {
+          "feature_r8wEg7": {
+            "type": "feature",
+            "settings": {
+              "icon": "clock",
+              "title": "Easy to Install",
+              "description": "5-minute install setup using your board's original holes."
+            }
+          },
+          "feature_KyYJVF": {
+            "type": "feature",
+            "settings": {
+              "icon": "recycle",
+              "title": "Sustainable",
+              "description": "Upcycle your old skateboard into a functional piece of art."
+            }
+          },
+          "feature_8NapEF": {
+            "type": "feature",
+            "settings": {
+              "icon": "heart",
+              "title": "Personalized",
+              "description": "Your memories, your design, your light."
+            }
+          }
+        },
+        "block_order": [
+          "feature_r8wEg7",
+          "feature_KyYJVF",
+          "feature_8NapEF"
+        ],
         "settings": {}
       },
       "how-it-works": {
         "type": "how-it-works",
+        "blocks": {
+          "step_knRB4C": {
+            "type": "step",
+            "settings": {
+              "step_number": 1,
+              "title": "Prep Your Board",
+              "description": "Clean and gather your worn deck."
+            }
+          },
+          "step_BDrVJY": {
+            "type": "step",
+            "settings": {
+              "step_number": 2,
+              "title": "Install the Kit",
+              "description": "Attach using the original holes."
+            }
+          },
+          "step_tDTFJJ": {
+            "type": "step",
+            "settings": {
+              "step_number": 3,
+              "title": "Light Up Your Space",
+              "description": "Mount it on the wall and enjoy!"
+            }
+          }
+        },
+        "block_order": [
+          "step_knRB4C",
+          "step_BDrVJY",
+          "step_tDTFJJ"
+        ],
         "settings": {
           "heading": "How It Works"
         }
@@ -153,10 +215,11 @@
       "hero": {
         "type": "hero",
         "settings": {
-          "heading": "Convert YOUR Skateboard deck into a Lamp in 5 Minutes!",
-          "subheading": "Transform Memories into a Glowing Masterpiece.",
+          "heading": "Turn YOUR Skateboard deck into a Lamp in 5 Minutes! 🛹💡",
+          "subheading": "Convert Memories into a Glowing Masterpiece.",
           "button_text": "Shop Now",
-          "button_link": ""
+          "button_link": "",
+          "hero_image": "shopify://shop_images/GIFMaker_me_6_4e712dbe-a1f6-4d79-a71a-c8c662893279.gif"
         }
       }
     },

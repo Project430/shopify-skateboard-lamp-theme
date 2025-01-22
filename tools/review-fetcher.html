@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etsy Review Fetcher</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 p-8">
+    <div class="max-w-3xl mx-auto">
+        <h1 class="text-2xl font-bold mb-6">Etsy Review Fetcher</h1>
+        
+        <div class="bg-white p-6 rounded-lg shadow-sm mb-8">
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Your Etsy Shop URL</label>
+                <input type="text" id="shopUrl" 
+                       placeholder="https://www.etsy.com/shop/YourShopName"
+                       class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Number of Review Pages to Load</label>
+                <input type="number" id="pageCount" value="5" min="1" max="20"
+                       class="w-24 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+            </div>
+
+            <div class="mb-4">
+                <label class="flex items-center">
+                    <input type="checkbox" id="onlyWithPhotos" class="rounded text-blue-600">
+                    <span class="ml-2 text-sm text-gray-700">Only get reviews with photos</span>
+                </label>
+            </div>
+
+            <button onclick="fetchReviews()" 
+                    class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                Fetch Reviews
+            </button>
+        </div>
+
+        <div id="progress" class="hidden mb-8">
+            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div class="bg-blue-600 h-2.5 rounded-full" style="width: 0%" id="progressBar"></div>
+            </div>
+            <p class="text-sm text-gray-600 mt-2" id="progressText">Loading...</p>
+        </div>
+
+        <div id="results" class="hidden">
+            <h2 class="text-xl font-bold mb-4">Results</h2>
+            <div class="bg-white p-6 rounded-lg shadow-sm">
+                <div id="reviewsList" class="space-y-4"></div>
+                <div class="mt-6 pt-6 border-t">
+                    <button onclick="copyToClipboard()" 
+                            class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors">
+                        Copy JSON for Shopify
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function fetchReviews() {
+            const shopUrl = document.getElementById('shopUrl').value;
+            const pageCount = parseInt(document.getElementById('pageCount').value);
+            const onlyWithPhotos = document.getElementById('onlyWithPhotos').checked;
+            
+            if (!shopUrl) {
+                alert('Please enter your Etsy shop URL');
+                return;
+            }
+
+            // Show progress
+            document.getElementById('progress').classList.remove('hidden');
+            document.getElementById('results').classList.add('hidden');
+            
+            try {
+                const reviews = [];
+                for (let page = 1; page <= pageCount; page++) {
+                    // Update progress
+                    const progress = (page / pageCount) * 100;
+                    document.getElementById('progressBar').style.width = `${progress}%`;
+                    document.getElementById('progressText').textContent = `Loading page ${page} of ${pageCount}...`;
+
+                    // Fetch page
+                    const pageUrl = `${shopUrl}/reviews?page=${page}`;
+                    const pageReviews = await fetchPage(pageUrl);
+                    
+                    // Filter reviews
+                    const filteredReviews = pageReviews.filter(review => {
+                        if (review.rating < 4) return false;
+                        if (onlyWithPhotos && !review.hasPhoto) return false;
+                        return true;
+                    });
+                    
+                    reviews.push(...filteredReviews);
+                }
+
+                // Format for Shopify
+                const formattedReviews = formatForShopify(reviews);
+                
+                // Display results
+                displayResults(formattedReviews);
+                
+            } catch (error) {
+                alert('Error fetching reviews: ' + error.message);
+            }
+            
+            // Hide progress
+            document.getElementById('progress').classList.add('hidden');
+        }
+
+        function formatForShopify(reviews) {
+            return reviews.map((review, index) => ({
+                type: "testimonial",
+                settings: {
+                    testimonial: review.text,
+                    author_name: review.author,
+                    author_location: review.location,
+                    rating: review.rating,
+                    date: review.date,
+                    review_image_url: review.imageUrl,
+                    verified: true
+                }
+            }));
+        }
+
+        function displayResults(reviews) {
+            const resultsDiv = document.getElementById('results');
+            const reviewsList = document.getElementById('reviewsList');
+            
+            reviewsList.innerHTML = '';
+            reviews.forEach((review, index) => {
+                const reviewDiv = document.createElement('div');
+                reviewDiv.className = 'p-4 border rounded';
+                reviewDiv.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="font-medium">${review.settings.author_name}</p>
+                            <p class="text-sm text-gray-500">${review.settings.date || ''}</p>
+                        </div>
+                        <div class="flex">
+                            ${'★'.repeat(review.settings.rating)}${'☆'.repeat(5-review.settings.rating)}
+                        </div>
+                    </div>
+                    <p class="mt-2">${review.settings.testimonial}</p>
+                `;
+                reviewsList.appendChild(reviewDiv);
+            });
+            
+            // Store reviews data for copying
+            resultsDiv.dataset.reviews = JSON.stringify(reviews);
+            resultsDiv.classList.remove('hidden');
+        }
+
+        function copyToClipboard() {
+            const resultsDiv = document.getElementById('results');
+            const reviews = resultsDiv.dataset.reviews;
+            
+            navigator.clipboard.writeText(reviews).then(() => {
+                alert('Reviews JSON copied to clipboard!');
+            }).catch(err => {
+                alert('Error copying to clipboard: ' + err.message);
+            });
+        }
+
+        // Note: This is a placeholder function since we can't actually scrape from the browser
+        // You would need a server-side component to do the actual scraping
+        async function fetchPage(url) {
+            // This would normally fetch and parse the page
+            // For demo purposes, returning sample data
+            return [
+                {
+                    rating: 5,
+                    text: "This is a sample 5-star review",
+                    author: "Sample Customer",
+                    date: "Jan 1, 2024",
+                    location: "United States",
+                    hasPhoto: true
+                }
+            ];
+        }
+    </script>
+</body>
+</html>

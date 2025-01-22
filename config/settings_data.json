@@ -145,7 +145,7 @@
       "safety": {
         "type": "safety",
         "settings": {
-          "heading": "Safe. Simple. Smart.",
+          "heading": "Safe. Simple. Durable.",
           "description": "With Lightwheel, you can rest assured knowing your skateboard lamp is crafted with high-quality, tested components that prioritize safety."
         }
       },
@@ -178,38 +178,29 @@
       "testimonials": {
         "type": "testimonials",
         "blocks": {
-          "testimonial_etPV6N": {
-            "type": "testimonial",
-            "settings": {
-              "testimonial": "I turned my first skateboard into a lamp—now it's the centerpiece of my room!",
-              "author_name": "Alex T.",
-              "author_location": "California, USA"
-            }
-          },
           "testimonial_QNKanM": {
             "type": "testimonial",
             "settings": {
+              "rating": 5,
+              "date": "",
               "testimonial": "I turned my first skateboard into a lamp—now it's the centerpiece of my room!",
               "author_name": "Alex T.",
-              "author_location": "California, USA"
-            }
-          },
-          "testimonial_pXN9ap": {
-            "type": "testimonial",
-            "settings": {
-              "testimonial": "I turned my first skateboard into a lamp—now it's the centerpiece of my room!",
-              "author_name": "Alex T.",
-              "author_location": "California, USA"
+              "author_location": "California, USA",
+              "review_image_url": "",
+              "verified": true
             }
           }
         },
         "block_order": [
-          "testimonial_etPV6N",
-          "testimonial_QNKanM",
-          "testimonial_pXN9ap"
+          "testimonial_QNKanM"
         ],
         "settings": {
-          "heading": "What Our Customers Say"
+          "heading": "What Our Customers Say",
+          "subheading": "See what our customers are saying about us on Etsy",
+          "show_etsy_logo": true,
+          "show_etsy_source": true,
+          "show_all_reviews_link": true,
+          "reviews_link": ""
         }
       },
       "hero": {

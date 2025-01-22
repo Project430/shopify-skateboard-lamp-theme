@@ -1,0 +1,105 @@
+{%- assign columns = section.settings.columns | default: 3 -%}
+
+<div class="bg-gray-50 py-12">
+  <div class="container mx-auto px-4">
+    <header class="text-center mb-12">
+      <h1 class="text-4xl font-bold mb-4">{{ collection.title }}</h1>
+      {% if collection.description != blank %}
+        <div class="text-gray-600 max-w-3xl mx-auto">{{ collection.description }}</div>
+      {% endif %}
+    </header>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-{{ columns }} gap-8">
+      {% for product in collection.products %}
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+          <a href="{{ product.url }}" class="block relative aspect-square">
+            {% if product.featured_image %}
+              <img
+                src="{{ product.featured_image | img_url: 'large' }}"
+                alt="{{ product.featured_image.alt | escape }}"
+                class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+              >
+            {% else %}
+              {{ 'product-1' | placeholder_svg_tag: 'w-full h-full object-cover bg-gray-100' }}
+            {% endif %}
+          </a>
+
+          <div class="p-6">
+            <h2 class="text-xl font-semibold mb-2">
+              <a href="{{ product.url }}" class="hover:text-primary">{{ product.title }}</a>
+            </h2>
+
+            <div class="flex items-center justify-between">
+              <span class="text-lg font-bold text-gray-900">{{ product.price | money }}</span>
+              {% if product.compare_at_price > product.price %}
+                <span class="text-sm text-gray-500 line-through">{{ product.compare_at_price | money }}</span>
+              {% endif %}
+            </div>
+
+            {% if product.available %}
+              <form method="post" action="/cart/add" class="mt-4">
+                <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                <button type="submit" class="w-full bg-primary text-white px-6 py-2 rounded-lg hover:bg-opacity-90 transition-colors">
+                  Add to Cart
+                </button>
+              </form>
+            {% else %}
+              <button disabled class="w-full bg-gray-300 text-gray-600 px-6 py-2 rounded-lg mt-4 cursor-not-allowed">
+                Sold Out
+              </button>
+            {% endif %}
+          </div>
+        </div>
+      {% else %}
+        <div class="col-span-full text-center py-12">
+          <p class="text-gray-600">No products found in this collection</p>
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if paginate.pages > 1 %}
+      <div class="flex justify-center space-x-2 mt-12">
+        {% if paginate.previous %}
+          <a href="{{ paginate.previous.url }}" class="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+            Previous
+          </a>
+        {% endif %}
+
+        {% for part in paginate.parts %}
+          {% if part.is_link %}
+            <a href="{{ part.url }}" class="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+              {{ part.title }}
+            </a>
+          {% else %}
+            <span class="px-4 py-2 bg-primary text-white border border-primary rounded-lg">
+              {{ part.title }}
+            </span>
+          {% endif %}
+        {% endfor %}
+
+        {% if paginate.next %}
+          <a href="{{ paginate.next.url }}" class="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+            Next
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection Template",
+  "settings": [
+    {
+      "type": "range",
+      "id": "columns",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "label": "Products per row",
+      "default": 3
+    }
+  ]
+}
+{% endschema %}

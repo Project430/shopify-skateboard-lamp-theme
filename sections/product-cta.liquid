@@ -13,30 +13,13 @@
       <div class="text-center">
         <h2 class="text-3xl md:text-4xl font-bold mb-8">{{ section.settings.heading }}</h2>
         <div class="mb-8">
-          {% if product %}
-            <p class="text-3xl font-bold mb-2">{{ product.price | money }}</p>
-            {% if section.settings.show_compare_at_price and product.compare_at_price > product.price %}
-              <p class="text-xl line-through opacity-75">{{ product.compare_at_price | money }}</p>
-            {% endif %}
-          {% else %}
-            <p class="text-3xl font-bold mb-2">{{ section.settings.price }}</p>
-          {% endif %}
+          <p class="text-3xl font-bold mb-2">{{ section.settings.price }}</p>
           <p class="text-xl">{{ section.settings.price_subtext }}</p>
         </div>
-        {% if product %}
-          <form method="post" action="/cart/add" class="flex flex-col items-center space-y-4">
-            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-            <button type="submit" class="bg-white text-primary px-8 py-4 rounded-lg text-lg font-semibold inline-flex items-center hover:bg-opacity-90 transition-colors">
-              {{ section.settings.button_text }}
-              {% render 'icon-chevron-right' %}
-            </button>
-          </form>
-        {% else %}
-          <a href="{{ section.settings.button_link }}" class="bg-white text-primary px-8 py-4 rounded-lg text-lg font-semibold inline-flex items-center hover:bg-opacity-90 transition-colors">
-            {{ section.settings.button_text }}
-            {% render 'icon-chevron-right' %}
-          </a>
-        {% endif %}
+        <a href="{{ section.settings.button_link }}" class="bg-white text-primary px-8 py-4 rounded-lg text-lg font-semibold inline-flex items-center hover:bg-opacity-90 transition-colors">
+          {{ section.settings.button_text }}
+          {% render 'icon-chevron-right' %}
+        </a>
       </div>
       <div class="hidden md:block aspect-square">
         {% if section.settings.image_right %}
@@ -65,8 +48,7 @@
       "type": "text",
       "id": "price",
       "label": "Price",
-      "default": "$79.90",
-      "info": "Only used if no product is selected"
+      "default": "$79.90"
     },
     {
       "type": "text",
@@ -83,14 +65,7 @@
     {
       "type": "url",
       "id": "button_link",
-      "label": "Button Link",
-      "info": "Only used if no product is selected"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_compare_at_price",
-      "label": "Show Compare at Price",
-      "default": true
+      "label": "Button Link"
     },
     {
       "type": "image_picker",

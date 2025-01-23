@@ -1,0 +1,29 @@
+{
+  "cart": {
+    "general": {
+      "title": "Panier",
+      "continue_shopping": "Continuer vos achats",
+      "empty": "Votre panier est vide",
+      "subtotal": "Sous-total",
+      "taxes_included_and_shipping_policy_html": "Taxes incluses et frais de port calculés à la caisse",
+      "remove": "Supprimer"
+    },
+    "label": {
+      "product": "Produit",
+      "price": "Prix",
+      "quantity": "Quantité",
+      "total": "Total",
+      "qty": "Qté"
+    }
+  },
+  "customer": {
+    "order": {
+      "discount": "Remise"
+    }
+  },
+  "general": {
+    "accessibility": {
+      "error": "Erreur"
+    }
+  }
+}

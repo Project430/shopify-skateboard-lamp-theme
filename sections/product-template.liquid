@@ -1,6 +1,71 @@
-.settings.enable_payment_button and product.selling_plan_groups == empty %} btn--secondary-accent{% endif %}"
+{% comment %}Complete product template content: Media gallery, variants, description, etc.{% endcomment %}
+<div class="product-template__container page-width"
+  id="ProductSection-{{ section.id }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="product"
+  data-enable-history-state="true"
+  data-ajax-enabled="{{ settings.enable_ajax }}"
+>
+  <div class="product-single__media-group-wrapper">
+    {% include 'product-media-gallery' %}
+  </div>
+
+  <div class="grid">
+    <div class="grid__item medium-up--one-half">
+      <div class="product-single__meta">
+        <div class="product-block">
+          <h1 class="product-single__title">{{ product.title }}</h1>
+          {% if section.settings.show_vendor %}
+            <p class="product-single__vendor">{{ product.vendor }}</p>
+          {% endif %}
+        </div>
+
+        <div class="product-block">
+          {% form 'product', product %}
+            <div class="product-form__controls-group">
+              {% if product.has_only_default_variant %}
+                <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+              {% else %}
+                <div class="product-form__controls-group--variants">
+                  {% for option in product.options_with_values %}
+                    <div class="selector-wrapper selector-wrapper--{{ option.name | handleize }}">
+                      <label for="SingleOptionSelector-{{ forloop.index0 }}" class="product-form__label">
+                        {{ option.name }}
+                      </label>
+                      <select class="product-form__input single-option-selector"
+                        id="SingleOptionSelector-{{ forloop.index0 }}"
+                        data-index="option{{ forloop.index }}"
+                      >
+                        {% for value in option.values %}
+                          <option value="{{ value | escape }}"{% if option.selected_value == value %} selected="selected"{% endif %}>{{ value }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+
+              {% if section.settings.show_quantity_selector %}
+                <div class="product-form__controls-group">
+                  <div class="product-form__item">
+                    <label for="Quantity" class="product-form__label">{{ 'products.product.quantity' | t }}</label>
+                    <input type="number" id="Quantity" name="quantity" value="1" min="1" class="product-form__input" pattern="[0-9]*">
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="product-form__error-message-wrapper" role="alert" hidden>
+              <span class="product-form__error-message"></span>
+            </div>
+
+            <div class="product-form__controls-group">
+              <div class="product-form__item">
+                <button type="submit" name="add"
+                  class="btn product-form__cart-submit{% if section.settings.enable_payment_button and product.selling_plan_groups == empty %} btn--secondary-accent{% endif %}"
                   {% if settings.enable_ajax %}aria-haspopup="dialog"{% endif %}
-                  data-add-to-cart>
+                  data-add-to-cart
+                >
                   <span data-add-to-cart-text>
                     {% unless current_variant.available %}
                       {{ 'products.product.sold_out' | t }}
@@ -45,17 +110,14 @@
           {{ product.description }}
         </div>
       
-      <div id="shopify-product-reviews" data-id="{{product.id}}">{{ product.metafields.spr.reviews }}</div>
-      
+        {% render 'judgeme_widgets', widget_type: 'judgeme_review_widget', concierge_install: true, product: product %}
+
         {% if section.settings.show_share_buttons %}
           {% include 'social-sharing', share_title: product.title, share_permalink: product.url, share_image: product.featured_media %}
         {% endif %}
+      </div>
     </div>
-  
-{% comment %}Start automatically added Judge.me widget{% endcomment %}
-  {% render 'judgeme_widgets', widget_type: 'judgeme_review_widget', concierge_install: true, product: product %}
-{% comment %}End automatically added Judge.me widget{% endcomment %}
-</div>
+  </div>
 </div>
 
 {% unless product == empty %}
@@ -90,7 +152,7 @@
       "default": false
     },
     {
-      "type": "checkbox",
+      "type": "checkbox", 
       "id": "enable_payment_button",
       "label": {
         "en": "Show dynamic checkout button"
@@ -149,7 +211,7 @@
       "default": true
     },
     {
-      "type": "checkbox", 
+      "type": "checkbox",
       "id": "enable_video_looping",
       "label": {
         "en": "Enable video looping"

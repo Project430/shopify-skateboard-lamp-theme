@@ -25,27 +25,14 @@
       "header": {
         "type": "header",
         "settings": {
-          "logo": "shopify://shop_images/NEW_logo_V3_64e1505d-7a77-4296-a504-e1a35d9a23ed.png",
-          "menu": "main-menu"
+          "logo": "shopify://shop_images/NEW_logo_V3_64e1505d-7a77-4296-a504-e1a35d9a23ed.png"
         }
       },
       "footer": {
         "type": "footer",
         "settings": {
-          "company_name": "Lightwheel",
           "company_description": "Transform your memories into light.",
-          "menu_title": "Quick Links",
-          "footer_menu": "footer",
-          "show_contact": true,
-          "contact_email": "",
-          "contact_phone": "",
-          "show_newsletter": true,
-          "newsletter_title": "Stay Updated",
-          "newsletter_text": "Subscribe to get updates about new products and special offers.",
-          "show_social_links": true,
-          "facebook_link": "",
-          "instagram_link": "",
-          "copyright_text": "© 2024 Lightwheel. All rights reserved."
+          "contact_email": ""
         }
       },
       "announcement-bar": {
@@ -137,7 +124,6 @@
           "price_subtext": "Includes FREE Shipping!",
           "button_text": "Get Your Kit Now",
           "button_link": "https://lightwheel.fr/products/quattro-skateboard-light-kit",
-          "show_compare_at_price": true,
           "image_left": "shopify://shop_images/IMG_9674.jpg",
           "image_right": "shopify://shop_images/IMG_5749.jpg"
         }
@@ -197,7 +183,14 @@
         }
       }
     },
-    "content_for_index": []
+    "content_for_index": [],
+    "blocks": {
+      "pagefly-page-builder": {
+        "type": "shopify://apps/pagefly-page-builder/blocks/app-embed/83e179f7-59a0-4589-8c66-c0dddf959200",
+        "disabled": false,
+        "settings": {}
+      }
+    }
   },
   "presets": {
     "Default": {

@@ -1,0 +1,22 @@
+{% assign current_variant = product.selected_or_first_available_variant %}
+<div class="product" itemscope itemtype="http://schema.org/Product">
+  <meta itemprop="name" content="{{ product.title }}">
+  <meta itemprop="url" content="{{ shop.url }}{{ product.url }}">
+  <meta itemprop="image" content="{{ product.featured_image.src | img_url: 'grande' }}">
+
+  {% for image in product.images %}
+    <img src="{{ image.src | img_url: 'medium' }}" alt="{{ image.alt | escape }}">
+  {% endfor %}
+
+  <h1>{{ product.title }}</h1>
+  <form action="/cart/add" method="post" enctype="multipart/form-data">
+    <select name="id">
+      {% for variant in product.variants %}
+        <option value="{{ variant.id }}">
+          {{ variant.title }} - {{ variant.price | money_with_currency }}
+        </option>
+      {% endfor %}
+    </select>
+    <input type="submit" value="Add to cart">
+  </form>
+</div>

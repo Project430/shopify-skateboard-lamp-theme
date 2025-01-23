@@ -6,11 +6,62 @@
   data-enable-history-state="true"
   data-ajax-enabled="{{ settings.enable_ajax }}"
 >
-  <div class="product-single__media-group-wrapper">
-    {% include 'product-media-gallery' %}
-  </div>
-
   <div class="grid">
+    <div class="grid__item medium-up--one-half">
+      {% if product.media != blank %}
+        <div class="product-single__media-group" data-media-group>
+          {%- for media in product.media -%}
+            <div class="product-single__media-wrapper" data-media-id="{{ media.id }}">
+              {% case media.media_type %}
+                {% when 'image' %}
+                  <div class="product-single__media">
+                    <img class="product-featured-media lazyload"
+                      src="{{ media | img_url: '300x300' }}"
+                      data-src="{{ media | img_url: 'master' }}"
+                      data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                      data-aspectratio="{{ media.preview_image.aspect_ratio }}"
+                      data-sizes="auto"
+                      alt="{{ media.alt | escape }}"
+                      {% if settings.enable_zoom %}data-image-zoom="true"{% endif %}
+                    >
+                  </div>
+                {% when 'external_video' %}
+                  <div class="product-single__media">
+                    {{ media | external_video_tag }}
+                  </div>
+                {% when 'video' %}
+                  <div class="product-single__media">
+                    {{ media | video_tag: controls: true, loop: section.settings.enable_video_looping }}
+                  </div>
+                {% when 'model' %}
+                  <div class="product-single__media">
+                    {{ media | model_viewer_tag }}
+                  </div>
+              {% endcase %}
+            </div>
+          {%- endfor -%}
+        </div>
+
+        {% if product.media.size > 1 %}
+          <div class="product-single__thumbnails">
+            {%- for media in product.media -%}
+              <button 
+                type="button"
+                class="product-single__thumbnail-item"
+                data-media-id="{{ media.id }}"
+              >
+                <img
+                  class="product-single__thumbnail-image"
+                  src="{{ media.preview_image | img_url: '100x100' }}"
+                  alt="{{ media.alt | escape }}"
+                >
+              </button>
+            {%- endfor -%}
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>
+
     <div class="grid__item medium-up--one-half">
       <div class="product-single__meta">
         <div class="product-block">

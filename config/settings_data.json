@@ -39,7 +39,7 @@
         "type": "announcement-bar",
         "settings": {
           "show_announcement": true,
-          "announcement_text": "Vegas package",
+          "announcement_text": "Free vegas package",
           "announcement_link": "",
           "show_close": true
         }

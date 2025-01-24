@@ -14,29 +14,35 @@ class ProductForm extends HTMLElement {
 
     try {
       const formData = new FormData(this.form);
+      const quantity = formData.get('quantity') || 1;
+      const id = formData.get('id');
+
       const response = await fetch('/cart/add.js', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           items: [{
-            id: formData.get('id'),
-            quantity: formData.get('quantity') || 1
+            id: Number(id),
+            quantity: Number(quantity)
           }]
         })
       });
 
       const data = await response.json();
       
-      if (!response.ok) throw new Error(data.description || 'Error adding to cart');
-      
-      // Refresh cart count or show success message here
+      if (!response.ok) {
+        throw new Error(data.description || 'Error adding to cart');
+      }
+
+      // After successful add, update cart before redirect
+      await fetch('/cart.js');
       window.location.href = '/cart';
       
     } catch (error) {
       console.error('Error:', error);
-      // Show error message to user
       alert(error.message);
     } finally {
       submitButton.classList.remove('loading');

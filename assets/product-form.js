@@ -16,16 +16,29 @@ class ProductForm extends HTMLElement {
       const formData = new FormData(this.form);
       const response = await fetch('/cart/add.js', {
         method: 'POST',
-        body: formData
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          items: [{
+            id: formData.get('id'),
+            quantity: formData.get('quantity') || 1
+          }]
+        })
       });
 
-      if (!response.ok) throw new Error('Network response was not ok');
+      const data = await response.json();
       
-      // Redirect to cart page after successful addition
+      if (!response.ok) throw new Error(data.description || 'Error adding to cart');
+      
+      // Refresh cart count or show success message here
       window.location.href = '/cart';
       
     } catch (error) {
       console.error('Error:', error);
+      // Show error message to user
+      alert(error.message);
+    } finally {
       submitButton.classList.remove('loading');
       submitButton.disabled = false;
     }

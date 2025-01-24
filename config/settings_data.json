@@ -168,7 +168,7 @@
           "subheading": "See what our customers are saying about us on Etsy",
           "show_etsy_logo": false,
           "show_etsy_source": false,
-          "show_all_reviews_link": true,
+          "show_all_reviews_link": false,
           "reviews_link": "https://lightwheel.fr/products/quattro-skateboard-light-kit"
         }
       },

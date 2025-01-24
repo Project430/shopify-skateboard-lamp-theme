@@ -1,9 +1,68 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "main-product",
       "settings": {}
+    },
+    "1737717267f9b8c67b": {
+      "type": "apps",
+      "settings": {}
+    },
+    "17377173247d582cb9": {
+      "type": "apps",
+      "settings": {}
+    },
+    "how_it_works_m67TeV": {
+      "type": "how-it-works",
+      "blocks": {
+        "step_XcYeC9": {
+          "type": "step",
+          "settings": {
+            "step_number": 1,
+            "title": "Prep Your Board",
+            "description": "Clean and gather your worn deck."
+          }
+        },
+        "step_4rt4Ea": {
+          "type": "step",
+          "settings": {
+            "step_number": 2,
+            "title": "Install the Kit",
+            "description": "Attach using the original holes."
+          }
+        },
+        "step_YJXhgT": {
+          "type": "step",
+          "settings": {
+            "step_number": 3,
+            "title": "Light Up Your Space",
+            "description": "Mount it on the wall and enjoy!"
+          }
+        }
+      },
+      "block_order": [
+        "step_XcYeC9",
+        "step_4rt4Ea",
+        "step_YJXhgT"
+      ],
+      "settings": {
+        "heading": "How It Works"
+      }
     }
   },
-  "order": ["main"]
+  "order": [
+    "main",
+    "1737717267f9b8c67b",
+    "17377173247d582cb9",
+    "how_it_works_m67TeV"
+  ]
 }

@@ -1,0 +1,61 @@
+{% if cart.item_count > 0 %}
+  <div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+    <h1 class="text-3xl font-bold tracking-tight text-gray-900">Your Cart</h1>
+    
+    <form action="/cart" method="post" novalidate>
+      <table class="mt-8 w-full">
+        <thead>
+          <tr>
+            <th class="text-left">Product</th>
+            <th class="text-center">Quantity</th>
+            <th class="text-right">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in cart.items %}
+            <tr>
+              <td>
+                <div class="flex items-center">
+                  <img src="{{ item.image | img_url: '100x' }}" alt="{{ item.title | escape }}" class="h-16 w-16 object-cover">
+                  <div class="ml-4">
+                    <h3>{{ item.product.title }}</h3>
+                    <p class="text-sm text-gray-500">{{ item.variant.title }}</p>
+                    <p class="text-sm font-medium text-gray-900">{{ item.price | money }}</p>
+                  </div>
+                </div>
+              </td>
+              <td class="text-center">
+                <input type="number" 
+                       name="updates[]" 
+                       value="{{ item.quantity }}" 
+                       min="0"
+                       class="w-16 text-center border border-gray-300 rounded-md">
+              </td>
+              <td class="text-right">{{ item.final_line_price | money }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2" class="text-right pt-4">Subtotal:</td>
+            <td class="text-right pt-4 font-medium">{{ cart.total_price | money }}</td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <div class="mt-8 flex justify-end space-x-4">
+        <button type="submit" name="update" class="bg-gray-200 text-gray-800 px-6 py-3 rounded-md">
+          Update Cart
+        </button>
+        <button type="submit" name="checkout" class="bg-gray-900 text-white px-6 py-3 rounded-md">
+          Checkout
+        </button>
+      </div>
+    </form>
+  </div>
+{% else %}
+  <div class="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8 text-center">
+    <h2 class="text-3xl font-bold tracking-tight text-gray-900">Your cart is empty</h2>
+    <p class="mt-4 text-gray-500">Continue shopping on the <a href="/collections/all" class="text-gray-900 underline">all products page</a>.</p>
+  </div>
+{% endif %}

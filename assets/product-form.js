@@ -1,8 +1,7 @@
-class ProductForm extends HTMLElement {
+class ProductForm extends HTMLFormElement {
   constructor() {
     super();
-    this.form = this.querySelector('form');
-    this.form.addEventListener('submit', this.onSubmit.bind(this));
+    this.addEventListener('submit', this.onSubmit.bind(this));
   }
 
   async onSubmit(evt) {
@@ -13,7 +12,7 @@ class ProductForm extends HTMLElement {
     submitButton.disabled = true;
 
     try {
-      const formData = new FormData(this.form);
+      const formData = new FormData(this);
       const response = await fetch('/cart/add.js', {
         method: 'POST',
         body: formData
@@ -21,7 +20,6 @@ class ProductForm extends HTMLElement {
 
       if (!response.ok) throw new Error('Network response was not ok');
       
-      // Redirect to cart page after successful addition
       window.location.href = '/cart';
       
     } catch (error) {
@@ -32,4 +30,4 @@ class ProductForm extends HTMLElement {
   }
 }
 
-customElements.define('product-form', ProductForm);
+customElements.define('product-form', ProductForm, { extends: 'form' });

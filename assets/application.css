@@ -1,0 +1,6 @@
+.loading .loading-hidden {
+  display: none;
+}
+.loading .loading-visible {
+  display: block;
+}

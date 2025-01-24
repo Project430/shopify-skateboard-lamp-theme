@@ -14,7 +14,7 @@
         <p class="text-3xl tracking-tight text-gray-900">{{ current_variant.price | money }}</p>
       </div>
 
-      <form method="post" action="/cart/add" id="product-form" class="mt-6">
+      <form method="post" action="/cart/add" id="product-form" is="product-form" class="mt-6">
         <input type="hidden" name="id" value="{{ current_variant.id }}">
         
         {% for option in product.options_with_values %}
@@ -37,8 +37,8 @@
 
         <div class="mt-8">
           <button type="submit" class="w-full bg-gray-900 text-white px-6 py-3 rounded-md flex items-center justify-center space-x-2 hover:bg-gray-800 transition-colors">
-            <span class="loading:hidden">Add to Cart</span>
-            <span class="hidden loading:block">Adding...</span>
+            <span class="loading-hidden">Add to Cart</span>
+            <span class="hidden loading-visible">Adding...</span>
           </button>
         </div>
       </form>

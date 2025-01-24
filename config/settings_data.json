@@ -39,7 +39,7 @@
         "type": "announcement-bar",
         "settings": {
           "show_announcement": true,
-          "announcement_text": "Screaming opportunity ! Free shipping this January",
+          "announcement_text": "Free shipping this January",
           "announcement_link": "",
           "show_close": true
         }
@@ -164,7 +164,7 @@
       "testimonials": {
         "type": "testimonials",
         "settings": {
-          "heading": "What Our Customers Say",
+          "heading": "Also available on Etsy !",
           "subheading": "See what our customers are saying about us on Etsy",
           "show_etsy_logo": false,
           "show_etsy_source": false,
@@ -187,6 +187,11 @@
     "blocks": {
       "pagefly-page-builder": {
         "type": "shopify://apps/pagefly-page-builder/blocks/app-embed/83e179f7-59a0-4589-8c66-c0dddf959200",
+        "disabled": false,
+        "settings": {}
+      },
+      "14060646107696862457": {
+        "type": "shopify://apps/judge-me-reviews/blocks/judgeme_core/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
         "disabled": false,
         "settings": {}
       }

@@ -183,6 +183,23 @@
       },
       "testimonials": {
         "type": "testimonials",
+        "blocks": {
+          "testimonial_CJppyz": {
+            "type": "testimonial",
+            "settings": {
+              "rating": 5,
+              "date": "",
+              "testimonial": "",
+              "author_name": "",
+              "author_location": "",
+              "review_image_url": "",
+              "verified": true
+            }
+          }
+        },
+        "block_order": [
+          "testimonial_CJppyz"
+        ],
         "settings": {
           "heading": "Also available on Etsy !",
           "subheading": "See what our customers are saying about us on Etsy",

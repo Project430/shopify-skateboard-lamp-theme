@@ -8,14 +8,18 @@ class ProductForm extends HTMLFormElement {
     evt.preventDefault();
     
     const submitButton = this.querySelector('[type="submit"]');
-    if (submitButton.disabled) {
+    const variantId = this.querySelector('[name="id"]').value;
+    
+    // Check inventory availability
+    const inventory = window.variantInventory[variantId];
+    if (!inventory || !inventory.available || 
+        (inventory.inventory_management && 
+         inventory.inventory_quantity <= 0 && 
+         inventory.inventory_policy !== 'continue')) {
       return;
     }
 
-    const variantId = this.querySelector('[name="id"]').value;
-    const variant = variants.find(v => v.id.toString() === variantId);
-    
-    if (!variant || !variant.available) {
+    if (submitButton.disabled) {
       return;
     }
 
@@ -29,12 +33,24 @@ class ProductForm extends HTMLFormElement {
         body: formData
       });
 
-      if (!response.ok) throw new Error('Network response was not ok');
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.description || 'Network response was not ok');
+      }
       
       window.location.href = '/cart';
       
     } catch (error) {
       console.error('Error:', error);
+      
+      // Add error message to the form
+      const errorContainer = this.querySelector('.form-error') || document.createElement('p');
+      errorContainer.className = 'form-error mt-3 text-sm text-red-600';
+      errorContainer.textContent = error.message;
+      if (!this.querySelector('.form-error')) {
+        submitButton.parentNode.insertAdjacentElement('afterend', errorContainer);
+      }
+      
       submitButton.classList.remove('loading');
       submitButton.disabled = false;
     }

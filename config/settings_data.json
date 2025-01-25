@@ -120,8 +120,8 @@
         "type": "product-cta",
         "settings": {
           "heading": "Ready to Convert Your Board?",
-          "price": "$79.90",
-          "price_subtext": "Includes FREE Shipping!",
+          "price": "",
+          "price_subtext": "",
           "button_text": "Get Your Kit Now",
           "button_link": "https://lightwheel.fr/products/quattro-skateboard-light-kit",
           "image_left": "shopify://shop_images/IMG_9674.jpg",

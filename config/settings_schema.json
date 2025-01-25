@@ -1,1 +1,19 @@
-[]
+[
+  {
+    "name": "Theme Information",
+    "theme_name": "Skateboard Lamp Theme",
+    "theme_version": "4.0.0",
+    "theme_author": "Project430",
+    "theme_documentation_url": "",
+    "theme_support_url": ""
+  },
+  {
+    "name": "JudgeMe Reviews",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Add JudgeMe Product Reviews to your theme"
+      }
+    ]
+  }
+]

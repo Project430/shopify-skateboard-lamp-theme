@@ -42,6 +42,7 @@
                 name="options[{{ option.name }}]" 
                 class="block w-full rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 hover:border-gray-400 transition-colors"
                 onchange="handleVariantChange(this)"
+                data-index="{{ forloop.index0 }}"
               >
                 <option value="" disabled {% unless current_variant %}selected{% endunless %}>Select {{ option.name }}</option>
                 {% for value in option.values %}
@@ -121,41 +122,26 @@ function handleVariantChange(select) {
   const form = select.closest('form');
   const selects = form.querySelectorAll('select');
   const selectedOptions = Array.from(selects).map(select => select.value);
-  
-  // Check if any option is not selected
-  if (selectedOptions.includes('')) {
-    // Reset to first product image if not all options are selected
-    const firstImage = {{ product.images.first | json }};
-    const mainImage = document.getElementById('main-product-image');
-    mainImage.src = {{ product.images.first | img_url: 'large' | json }};
-    mainImage.alt = firstImage.alt;
-    
-    const firstThumbnail = document.querySelector('[data-image-id]');
-    if (firstThumbnail) {
-      document.querySelectorAll('[onclick^="updateMainImage"]').forEach(btn => {
-        btn.classList.remove('ring-2', 'ring-gray-900');
-      });
-      firstThumbnail.classList.add('ring-2', 'ring-gray-900');
-    }
-    return;
-  }
-  
   const matchingVariant = variants.find(variant => 
     variant.options.every((option, index) => option === selectedOptions[index])
   );
   
-  if (matchingVariant && variantImages[matchingVariant.id]) {
-    const image = variantImages[matchingVariant.id];
-    const mainImage = document.getElementById('main-product-image');
-    mainImage.src = image.url;
-    mainImage.alt = image.alt;
+  if (matchingVariant) {
+    form.querySelector('input[name="id"]').value = matchingVariant.id;
     
-    const thumbnail = document.querySelector(`[data-image-id="${image.id}"]`);
-    if (thumbnail) {
-      document.querySelectorAll('[onclick^="updateMainImage"]').forEach(btn => {
-        btn.classList.remove('ring-2', 'ring-gray-900');
-      });
-      thumbnail.classList.add('ring-2', 'ring-gray-900');
+    if (variantImages[matchingVariant.id]) {
+      const image = variantImages[matchingVariant.id];
+      const mainImage = document.getElementById('main-product-image');
+      mainImage.src = image.url;
+      mainImage.alt = image.alt;
+      
+      const thumbnail = document.querySelector(`[data-image-id="${image.id}"]`);
+      if (thumbnail) {
+        document.querySelectorAll('[onclick^="updateMainImage"]').forEach(btn => {
+          btn.classList.remove('ring-2', 'ring-gray-900');
+        });
+        thumbnail.classList.add('ring-2', 'ring-gray-900');
+      }
     }
   }
 }

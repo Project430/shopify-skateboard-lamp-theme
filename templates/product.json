@@ -57,12 +57,26 @@
       "settings": {
         "heading": "How It Works"
       }
+    },
+    "17378183302710b8e3": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_k3ePzJ": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_k3ePzJ"
+      ],
+      "settings": {}
     }
   },
   "order": [
     "main",
     "1737717267f9b8c67b",
     "17377173247d582cb9",
-    "how_it_works_m67TeV"
+    "how_it_works_m67TeV",
+    "17378183302710b8e3"
   ]
 }

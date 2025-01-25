@@ -13,51 +13,6 @@
       "type": "main-product",
       "settings": {}
     },
-    "1737717267f9b8c67b": {
-      "type": "apps",
-      "settings": {}
-    },
-    "17377173247d582cb9": {
-      "type": "apps",
-      "settings": {}
-    },
-    "how_it_works_m67TeV": {
-      "type": "how-it-works",
-      "blocks": {
-        "step_XcYeC9": {
-          "type": "step",
-          "settings": {
-            "step_number": 1,
-            "title": "Prep Your Board",
-            "description": "Clean and gather your worn deck."
-          }
-        },
-        "step_4rt4Ea": {
-          "type": "step",
-          "settings": {
-            "step_number": 2,
-            "title": "Install the Kit",
-            "description": "Attach using the original holes."
-          }
-        },
-        "step_YJXhgT": {
-          "type": "step",
-          "settings": {
-            "step_number": 3,
-            "title": "Light Up Your Space",
-            "description": "Mount it on the wall and enjoy!"
-          }
-        }
-      },
-      "block_order": [
-        "step_XcYeC9",
-        "step_4rt4Ea",
-        "step_YJXhgT"
-      ],
-      "settings": {
-        "heading": "How It Works"
-      }
-    },
     "17378183302710b8e3": {
       "type": "apps",
       "blocks": {
@@ -74,9 +29,6 @@
   },
   "order": [
     "main",
-    "1737717267f9b8c67b",
-    "17377173247d582cb9",
-    "how_it_works_m67TeV",
     "17378183302710b8e3"
   ]
 }

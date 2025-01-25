@@ -1,0 +1,28 @@
+<div class="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center">
+      <h2 class="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">What our customers say</h2>
+    </div>
+    <div class="mt-12">
+      <!-- Start of Judge.me Quattro -->
+      {{ shop.metafields.judgeme.all_reviews_text }}
+      {{ shop.metafields.judgeme.medals }}
+      {{ shop.metafields.judgeme.featured_carousel }}
+      {{ shop.metafields.judgeme.all_reviews_ui }}
+      <!-- End of Judge.me Quattro -->
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Judge.me Reviews",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Judge.me Reviews",
+      "category": "Reviews"
+    }
+  ]
+}
+{% endschema %}

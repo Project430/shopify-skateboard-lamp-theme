@@ -2,12 +2,6 @@
 
 <script>
 window.variants = {{ product.variants | json }};
-window.formatMoney = function(cents) {
-  return (cents/100).toLocaleString('en-US', {
-    style: 'currency',
-    currency: '{{ shop.currency }}'
-  });
-}
 </script>
 
 <div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
@@ -164,12 +158,6 @@ function handleVariantChange(event) {
   if (matchingVariant) {
     // Update variant ID
     document.getElementById('variant-id').value = matchingVariant.id;
-    
-    // Update price
-    const priceElement = form.closest('.mt-10').querySelector('.text-3xl.tracking-tight');
-    if (priceElement) {
-      priceElement.textContent = window.formatMoney(matchingVariant.price);
-    }
     
     // Update button state
     const submitButton = form.querySelector('[type="submit"]');

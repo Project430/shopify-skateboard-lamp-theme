@@ -2,6 +2,7 @@
 
 <div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
   <div class="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
+    <!-- Image section -->
     <div class="flex flex-col">
       <div class="aspect-w-1 aspect-h-1 w-full">
         <img id="main-product-image" src="{{ product.images.first | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}" class="w-full h-full object-cover rounded-lg">
@@ -23,16 +24,19 @@
       {% endif %}
     </div>
     
+    <!-- Product info -->
     <div class="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
       <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{ product.title }}</h1>
       
       <div class="mt-3">
         <h2 class="sr-only">Product information</h2>
-        <p class="text-3xl tracking-tight text-gray-900">{{ current_variant.price | money }}</p>
+        <p class="text-3xl tracking-tight text-gray-900" id="product-price">{{ current_variant.price | money }}</p>
       </div>
 
-      <form method="post" action="/cart/add" id="product-form" is="product-form" class="mt-6">
-        <input type="hidden" name="id" value="{{ current_variant.id }}">
+      <form method="post" action="/cart/add" id="product-form" class="mt-6">
+        {% assign current_options = current_variant.options %}
+        <div id="variant-data" data-variants="{{ product.variants | json }}"></div>
+        <input type="hidden" name="id" id="variant-id" value="{{ current_variant.id }}">
         
         {% for option in product.options_with_values %}
           <div class="mt-6">
@@ -40,15 +44,13 @@
             <div class="mt-2">
               <select 
                 name="options[{{ option.name }}]" 
-                class="block w-full rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 hover:border-gray-400 transition-colors"
-                onchange="handleVariantChange(this)"
-                data-index="{{ forloop.index0 }}"
+                class="block w-full rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 hover:border-gray-400 transition-colors variant-select"
+                data-option-index="{{ forloop.index0 }}"
               >
-                <option value="" disabled {% unless current_variant %}selected{% endunless %}>Select {{ option.name }}</option>
                 {% for value in option.values %}
                   <option 
                     value="{{ value }}"
-                    {% if current_variant.options[forloop.parentloop.index0] == value %}selected="selected"{% endif %}
+                    {% if current_options[forloop.parentloop.index0] == value %}selected="selected"{% endif %}
                   >
                     {{ value }}
                   </option>
@@ -60,12 +62,12 @@
 
         <div class="mt-8">
           <button type="submit" class="w-full bg-gray-900 text-white px-6 py-3 rounded-md flex items-center justify-center space-x-2 hover:bg-gray-800 transition-colors">
-            <span class="loading-hidden">Add to Cart</span>
-            <span class="hidden loading-visible">Adding...</span>
+            Add to Cart
           </button>
         </div>
       </form>
 
+      <!-- Features -->
       <div class="mt-10">
         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div class="flex items-start space-x-3">
@@ -83,6 +85,7 @@
         </div>
       </div>
 
+      <!-- Description -->
       <div class="mt-10 prose prose-sm">
         <h3 class="text-lg font-medium text-gray-900">Description</h3>
         <div class="mt-4 space-y-6">
@@ -94,19 +97,6 @@
 </div>
 
 <script>
-const variants = {{ product.variants | json }};
-const variantImages = {};
-
-{% for variant in product.variants %}
-  {% if variant.featured_image %}
-    variantImages[{{ variant.id }}] = {
-      id: {{ variant.featured_image.id }},
-      url: {{ variant.featured_image | img_url: 'large' | json }},
-      alt: {{ variant.featured_image.alt | json }}
-    };
-  {% endif %}
-{% endfor %}
-
 function updateMainImage(thumbnail, newSrc, newAlt) {
   const mainImage = document.getElementById('main-product-image');
   mainImage.src = newSrc;
@@ -118,36 +108,33 @@ function updateMainImage(thumbnail, newSrc, newAlt) {
   thumbnail.classList.add('ring-2', 'ring-gray-900');
 }
 
-function handleVariantChange(select) {
-  const form = select.closest('form');
-  const selects = form.querySelectorAll('select');
-  const selectedOptions = Array.from(selects).map(select => select.value);
-  const matchingVariant = variants.find(variant => 
-    variant.options.every((option, index) => option === selectedOptions[index])
-  );
-  
-  if (matchingVariant) {
-    form.querySelector('input[name="id"]').value = matchingVariant.id;
-    
-    if (variantImages[matchingVariant.id]) {
-      const image = variantImages[matchingVariant.id];
-      const mainImage = document.getElementById('main-product-image');
-      mainImage.src = image.url;
-      mainImage.alt = image.alt;
-      
-      const thumbnail = document.querySelector(`[data-image-id="${image.id}"]`);
-      if (thumbnail) {
-        document.querySelectorAll('[onclick^="updateMainImage"]').forEach(btn => {
-          btn.classList.remove('ring-2', 'ring-gray-900');
-        });
-        thumbnail.classList.add('ring-2', 'ring-gray-900');
-      }
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('product-form');
+  const variantIdInput = document.getElementById('variant-id');
+  const priceElement = document.getElementById('product-price');
+  const variantSelects = document.querySelectorAll('.variant-select');
+  const variantsData = JSON.parse(document.getElementById('variant-data').dataset.variants);
+
+  function updateVariant() {
+    const selectedOptions = Array.from(variantSelects).map(select => select.value);
+    const matchingVariant = variantsData.find(variant => 
+      JSON.stringify(variant.options) === JSON.stringify(selectedOptions)
+    );
+
+    if (matchingVariant) {
+      variantIdInput.value = matchingVariant.id;
+      priceElement.textContent = new Intl.NumberFormat('fr-FR', { 
+        style: 'currency', 
+        currency: 'EUR' 
+      }).format(matchingVariant.price/100);
     }
   }
-}
-</script>
 
-{{ 'product-form.js' | asset_url | script_tag }}
+  variantSelects.forEach(select => {
+    select.addEventListener('change', updateVariant);
+  });
+});
+</script>
 
 {% schema %}
 {

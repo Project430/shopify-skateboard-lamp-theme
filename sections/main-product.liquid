@@ -1,4 +1,11 @@
-[Previous content unchanged until the handleVariantChange function]
+{% assign current_variant = product.selected_or_first_available_variant %}
+
+<script>
+window.variants = {{ product.variants | json }};
+</script>
+
+<div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+  [Previous content unchanged until handleVariantChange function]
 
 function handleVariantChange(event) {
   const select = event.target;
@@ -14,13 +21,41 @@ function handleVariantChange(event) {
     // Update variant ID
     document.getElementById('variant-id').value = matchingVariant.id;
     
-    // Update price using Shopify money format
+    // Update price
     const priceElement = document.querySelector('.mt-3 .text-3xl.tracking-tight');
     if (priceElement) {
       priceElement.textContent = `$${(matchingVariant.price/100).toFixed(2)}`;
     }
     
-    [Rest of the function unchanged]
+    // Update button state
+    const submitButton = form.querySelector('[type="submit"]');
+    if (matchingVariant.available) {
+      submitButton.disabled = false;
+      submitButton.classList.remove('bg-gray-200', 'text-gray-500', 'cursor-not-allowed');
+      submitButton.classList.add('bg-gray-900', 'hover:bg-gray-800', 'text-white');
+      submitButton.querySelector('.loading-hidden').textContent = 'Add to Cart';
+    } else {
+      submitButton.disabled = true;
+      submitButton.classList.remove('bg-gray-900', 'hover:bg-gray-800', 'text-white');
+      submitButton.classList.add('bg-gray-200', 'text-gray-500', 'cursor-not-allowed');
+      submitButton.querySelector('.loading-hidden').textContent = 'Unavailable';
+    }
+    
+    // Update variant image if available
+    if (variantImages[matchingVariant.id]) {
+      const image = variantImages[matchingVariant.id];
+      const mainImage = document.getElementById('main-product-image');
+      mainImage.src = image.url;
+      mainImage.alt = image.alt;
+      
+      const thumbnail = document.querySelector(`[data-image-id="${image.id}"]`);
+      if (thumbnail) {
+        document.querySelectorAll('[onclick^="updateMainImage"]').forEach(btn => {
+          btn.classList.remove('ring-2', 'ring-gray-900');
+        });
+        thumbnail.classList.add('ring-2', 'ring-gray-900');
+      }
+    }
   }
 }
 

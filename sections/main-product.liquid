@@ -1,19 +1,20 @@
 {% assign current_variant = product.selected_or_first_available_variant %}
 
-<div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+<div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8" x-data="{ selectedVariant: '{{ current_variant.id }}' }">
   <div class="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
-    <!-- Image gallery -->
     <div class="flex flex-col">
       <div class="aspect-w-1 aspect-h-1 w-full">
-        <img id="main-product-image" src="{{ product.featured_image | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}" class="w-full h-full object-cover rounded-lg">
+        <img id="main-product-image" src="{{ current_variant.featured_image | default: product.featured_image | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}" class="w-full h-full object-cover rounded-lg">
       </div>
       
       {% if product.images.size > 1 %}
         <div class="mt-4 grid grid-cols-4 gap-4">
           {% for image in product.images %}
+            {% assign image_id = image.id %}
             <button 
-              class="aspect-w-1 aspect-h-1 relative rounded-lg overflow-hidden hover:opacity-75 transition-opacity {% if forloop.first %}ring-2 ring-gray-900{% endif %}"
+              class="aspect-w-1 aspect-h-1 relative rounded-lg overflow-hidden hover:opacity-75 transition-opacity {% if image.id == current_variant.featured_image.id %}ring-2 ring-gray-900{% endif %}"
               onclick="updateMainImage(this, '{{ image | img_url: 'large' }}', '{{ image.alt | escape }}')"
+              data-image-id="{{ image_id }}"
             >
               <img src="{{ image | img_url: '150x' }}" alt="{{ image.alt | escape }}" class="w-full h-full object-cover">
             </button>
@@ -37,7 +38,11 @@
           <div class="mt-6">
             <h3 class="text-sm font-medium text-gray-900">{{ option.name }}</h3>
             <div class="mt-2">
-              <select name="options[{{ option.name }}]" class="block w-full rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 hover:border-gray-400 transition-colors">
+              <select 
+                name="options[{{ option.name }}]" 
+                class="block w-full rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 hover:border-gray-400 transition-colors"
+                onchange="handleVariantChange(this)"
+              >
                 {% for value in option.values %}
                   <option 
                     value="{{ value }}"
@@ -87,17 +92,53 @@
 </div>
 
 <script>
+const variants = {{ product.variants | json }};
+const variantImages = {};
+
+{% for variant in product.variants %}
+  {% if variant.featured_image %}
+    variantImages[{{ variant.id }}] = {
+      id: {{ variant.featured_image.id }},
+      url: {{ variant.featured_image | img_url: 'large' | json }},
+      alt: {{ variant.featured_image.alt | json }}
+    };
+  {% endif %}
+{% endfor %}
+
 function updateMainImage(thumbnail, newSrc, newAlt) {
-  // Update main image
   const mainImage = document.getElementById('main-product-image');
   mainImage.src = newSrc;
   mainImage.alt = newAlt;
   
-  // Update thumbnail styling
   document.querySelectorAll('[onclick^="updateMainImage"]').forEach(btn => {
     btn.classList.remove('ring-2', 'ring-gray-900');
   });
   thumbnail.classList.add('ring-2', 'ring-gray-900');
+}
+
+function handleVariantChange(select) {
+  const form = select.closest('form');
+  const selects = form.querySelectorAll('select');
+  const selectedOptions = Array.from(selects).map(select => select.value);
+  
+  const matchingVariant = variants.find(variant => 
+    variant.options.every((option, index) => option === selectedOptions[index])
+  );
+  
+  if (matchingVariant && variantImages[matchingVariant.id]) {
+    const image = variantImages[matchingVariant.id];
+    const mainImage = document.getElementById('main-product-image');
+    mainImage.src = image.url;
+    mainImage.alt = image.alt;
+    
+    const thumbnail = document.querySelector(`[data-image-id="${image.id}"]`);
+    if (thumbnail) {
+      document.querySelectorAll('[onclick^="updateMainImage"]').forEach(btn => {
+        btn.classList.remove('ring-2', 'ring-gray-900');
+      });
+      thumbnail.classList.add('ring-2', 'ring-gray-900');
+    }
+  }
 }
 </script>
 

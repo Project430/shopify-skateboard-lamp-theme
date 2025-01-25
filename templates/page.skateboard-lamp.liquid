@@ -5,3 +5,7 @@
 {% section 'safety' %}
 {% section 'faq' %}
 {% section 'testimonials' %}
+ <div style='clear:both'></div>
+      <div id='judgeme_product_reviews' class='jdgm-widget jdgm-review-widget' data-product-title='{{ product.title | escape }}' data-id='{{ product.id }}' data-auto-install='false'>
+        {{ product.metafields.judgeme.widget }}
+      </div>

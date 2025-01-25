@@ -28,11 +28,11 @@
       
       <div class="mt-3">
         <h2 class="sr-only">Product information</h2>
-        <p class="text-3xl tracking-tight text-gray-900">{{ current_variant.price | money }}</p>
+        <p id="product-price" class="text-3xl tracking-tight text-gray-900">{{ current_variant.price | money }}</p>
       </div>
 
       <form method="post" action="/cart/add" id="product-form" is="product-form" class="mt-6">
-        <input type="hidden" name="id" value="{{ current_variant.id }}">
+        <input type="hidden" name="id" id="variant-id" value="{{ current_variant.id }}">
         
         {% for option in product.options_with_values %}
           <div class="mt-6">
@@ -103,8 +103,14 @@ const variantImages = {};
       url: {{ variant.featured_image | img_url: 'large' | json }},
       alt: {{ variant.featured_image.alt | json }}
     };
-  {% endif %}
-{% endfor %}
+  {% endif %}\n{% endfor %}
+
+function formatMoney(cents) {
+  return (cents/100).toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'EUR'
+  });
+}
 
 function updateMainImage(thumbnail, newSrc, newAlt) {
   const mainImage = document.getElementById('main-product-image');
@@ -122,40 +128,30 @@ function handleVariantChange(select) {
   const selects = form.querySelectorAll('select');
   const selectedOptions = Array.from(selects).map(select => select.value);
   
-  // Check if any option is not selected
-  if (selectedOptions.includes('')) {
-    // Reset to first product image if not all options are selected
-    const firstImage = {{ product.images.first | json }};
-    const mainImage = document.getElementById('main-product-image');
-    mainImage.src = {{ product.images.first | img_url: 'large' | json }};
-    mainImage.alt = firstImage.alt;
-    
-    const firstThumbnail = document.querySelector('[data-image-id]');
-    if (firstThumbnail) {
-      document.querySelectorAll('[onclick^="updateMainImage"]').forEach(btn => {
-        btn.classList.remove('ring-2', 'ring-gray-900');
-      });
-      firstThumbnail.classList.add('ring-2', 'ring-gray-900');
-    }
-    return;
-  }
-  
+  // Find matching variant
   const matchingVariant = variants.find(variant => 
     variant.options.every((option, index) => option === selectedOptions[index])
   );
   
-  if (matchingVariant && variantImages[matchingVariant.id]) {
-    const image = variantImages[matchingVariant.id];
-    const mainImage = document.getElementById('main-product-image');
-    mainImage.src = image.url;
-    mainImage.alt = image.alt;
+  if (matchingVariant) {
+    // Update variant ID and price
+    document.getElementById('variant-id').value = matchingVariant.id;
+    document.getElementById('product-price').textContent = formatMoney(matchingVariant.price);
     
-    const thumbnail = document.querySelector(`[data-image-id="${image.id}"]`);
-    if (thumbnail) {
-      document.querySelectorAll('[onclick^="updateMainImage"]').forEach(btn => {
-        btn.classList.remove('ring-2', 'ring-gray-900');
-      });
-      thumbnail.classList.add('ring-2', 'ring-gray-900');
+    // Update image if variant has one
+    if (variantImages[matchingVariant.id]) {
+      const image = variantImages[matchingVariant.id];
+      const mainImage = document.getElementById('main-product-image');
+      mainImage.src = image.url;
+      mainImage.alt = image.alt;
+      
+      const thumbnail = document.querySelector(`[data-image-id="${image.id}"]`);
+      if (thumbnail) {
+        document.querySelectorAll('[onclick^="updateMainImage"]').forEach(btn => {
+          btn.classList.remove('ring-2', 'ring-gray-900');
+        });
+        thumbnail.classList.add('ring-2', 'ring-gray-900');
+      }
     }
   }
 }

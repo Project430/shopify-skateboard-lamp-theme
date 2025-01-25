@@ -1,7 +1,7 @@
 {% assign current_variant = product.selected_or_first_available_variant %}
 
 <script>
-const variants = {{ product.variants | json }};
+window.variants = {{ product.variants | json }};
 </script>
 
 <div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
@@ -67,6 +67,7 @@ const variants = {{ product.variants | json }};
                   <option 
                     value="{{ value }}"
                     {% if option_value_selected %}selected="selected"{% endif %}
+                    {% unless variant_available %}disabled="disabled"{% endunless %}
                   >
                     {{ value }}{% unless variant_available %} - Unavailable{% endunless %}
                   </option>
@@ -77,8 +78,18 @@ const variants = {{ product.variants | json }};
         {% endfor %}
 
         <div class="mt-8">
-          <button type="submit" class="w-full bg-gray-900 text-white px-6 py-3 rounded-md flex items-center justify-center space-x-2 hover:bg-gray-800 transition-colors">
-            <span class="loading-hidden">Add to Cart</span>
+          <button 
+            type="submit" 
+            class="w-full px-6 py-3 rounded-md flex items-center justify-center space-x-2 transition-colors {% if current_variant.available %}bg-gray-900 hover:bg-gray-800 text-white{% else %}bg-gray-200 text-gray-500 cursor-not-allowed{% endif %}" 
+            {% unless current_variant.available %}disabled{% endunless %}
+          >
+            <span class="loading-hidden">
+              {% if current_variant.available %}
+                Add to Cart
+              {% else %}
+                Unavailable
+              {% endif %}
+            </span>
             <span class="hidden loading-visible">Adding...</span>
           </button>
         </div>
@@ -142,13 +153,26 @@ function handleVariantChange(event) {
   const selects = form.querySelectorAll('select');
   const selectedOptions = Array.from(selects).map(select => select.value);
   
-  const matchingVariant = variants.find(variant => 
+  const matchingVariant = window.variants.find(variant => 
     variant.options.every((option, index) => option === selectedOptions[index])
   );
   
   if (matchingVariant) {
-    // Update variant ID
     document.getElementById('variant-id').value = matchingVariant.id;
+    
+    // Update button state
+    const submitButton = form.querySelector('[type="submit"]');
+    if (matchingVariant.available) {
+      submitButton.disabled = false;
+      submitButton.classList.remove('bg-gray-200', 'text-gray-500', 'cursor-not-allowed');
+      submitButton.classList.add('bg-gray-900', 'hover:bg-gray-800', 'text-white');
+      submitButton.querySelector('.loading-hidden').textContent = 'Add to Cart';
+    } else {
+      submitButton.disabled = true;
+      submitButton.classList.remove('bg-gray-900', 'hover:bg-gray-800', 'text-white');
+      submitButton.classList.add('bg-gray-200', 'text-gray-500', 'cursor-not-allowed');
+      submitButton.querySelector('.loading-hidden').textContent = 'Unavailable';
+    }
     
     // Update variant image if available
     if (variantImages[matchingVariant.id]) {
@@ -167,6 +191,20 @@ function handleVariantChange(event) {
     }
   }
 }
+
+// Initialize variant state on page load
+document.addEventListener('DOMContentLoaded', () => {
+  const currentVariantId = document.getElementById('variant-id').value;
+  const currentVariant = window.variants.find(v => v.id.toString() === currentVariantId);
+  
+  if (currentVariant && !currentVariant.available) {
+    const submitButton = document.querySelector('[type="submit"]');
+    submitButton.disabled = true;
+    submitButton.classList.remove('bg-gray-900', 'hover:bg-gray-800', 'text-white');
+    submitButton.classList.add('bg-gray-200', 'text-gray-500', 'cursor-not-allowed');
+    submitButton.querySelector('.loading-hidden').textContent = 'Unavailable';
+  }
+});
 </script>
 
 {{ 'product-form.js' | asset_url | script_tag }}

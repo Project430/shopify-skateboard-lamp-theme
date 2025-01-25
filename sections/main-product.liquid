@@ -30,6 +30,15 @@ window.variants = {{ product.variants | json }};
     <div class="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
       <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{ product.title }}</h1>
       
+
+<!-- Start of Judge.me code -->
+      <div style='{{ jm_style }}' class='jdgm-widget jdgm-preview-badge' data-id='{{ product.id }}' data-auto-install='false'>
+        {{ product.metafields.judgeme.badge }}
+      </div>
+      <!-- End of Judge.me code -->
+
+
+
       <div class="mt-3">
         <h2 class="sr-only">Product information</h2>
         <p class="text-3xl tracking-tight text-gray-900">{{ current_variant.price | money }}</p>

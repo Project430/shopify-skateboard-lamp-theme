@@ -1,6 +1,7 @@
 {% assign current_variant = product.selected_or_first_available_variant %}
 
 <div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+  <!-- Previous content remains the same until form section -->
   <div class="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
     <div class="flex flex-col">
       <div class="aspect-w-1 aspect-h-1 w-full">
@@ -32,7 +33,7 @@
       </div>
 
       <form method="post" action="/cart/add" id="product-form" is="product-form" class="mt-6">
-        <input type="hidden" name="id" value="{{ current_variant.id }}">
+        <input type="hidden" name="id" id="variant-id" value="{{ current_variant.id }}">
         
         {% for option in product.options_with_values %}
           <div class="mt-6">
@@ -41,9 +42,9 @@
               <select 
                 name="options[{{ option.name }}]" 
                 class="block w-full rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 hover:border-gray-400 transition-colors"
-                onchange="handleVariantChange(this)"
+                onchange="handleVariantChange(event)"
+                data-index="{{ forloop.index0 }}"
               >
-                <option value="" disabled {% unless current_variant %}selected{% endunless %}>Select {{ option.name }}</option>
                 {% for value in option.values %}
                   <option 
                     value="{{ value }}"
@@ -65,6 +66,7 @@
         </div>
       </form>
 
+      <!-- Features section remains the same -->
       <div class="mt-10">
         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div class="flex items-start space-x-3">
@@ -117,45 +119,32 @@ function updateMainImage(thumbnail, newSrc, newAlt) {
   thumbnail.classList.add('ring-2', 'ring-gray-900');
 }
 
-function handleVariantChange(select) {
+function handleVariantChange(event) {
+  const select = event.target;
   const form = select.closest('form');
   const selects = form.querySelectorAll('select');
   const selectedOptions = Array.from(selects).map(select => select.value);
-  
-  // Check if any option is not selected
-  if (selectedOptions.includes('')) {
-    // Reset to first product image if not all options are selected
-    const firstImage = {{ product.images.first | json }};
-    const mainImage = document.getElementById('main-product-image');
-    mainImage.src = {{ product.images.first | img_url: 'large' | json }};
-    mainImage.alt = firstImage.alt;
-    
-    const firstThumbnail = document.querySelector('[data-image-id]');
-    if (firstThumbnail) {
-      document.querySelectorAll('[onclick^="updateMainImage"]').forEach(btn => {
-        btn.classList.remove('ring-2', 'ring-gray-900');
-      });
-      firstThumbnail.classList.add('ring-2', 'ring-gray-900');
-    }
-    return;
-  }
   
   const matchingVariant = variants.find(variant => 
     variant.options.every((option, index) => option === selectedOptions[index])
   );
   
-  if (matchingVariant && variantImages[matchingVariant.id]) {
-    const image = variantImages[matchingVariant.id];
-    const mainImage = document.getElementById('main-product-image');
-    mainImage.src = image.url;
-    mainImage.alt = image.alt;
+  if (matchingVariant) {
+    document.getElementById('variant-id').value = matchingVariant.id;
     
-    const thumbnail = document.querySelector(`[data-image-id="${image.id}"]`);
-    if (thumbnail) {
-      document.querySelectorAll('[onclick^="updateMainImage"]').forEach(btn => {
-        btn.classList.remove('ring-2', 'ring-gray-900');
-      });
-      thumbnail.classList.add('ring-2', 'ring-gray-900');
+    if (variantImages[matchingVariant.id]) {
+      const image = variantImages[matchingVariant.id];
+      const mainImage = document.getElementById('main-product-image');
+      mainImage.src = image.url;
+      mainImage.alt = image.alt;
+      
+      const thumbnail = document.querySelector(`[data-image-id="${image.id}"]`);
+      if (thumbnail) {
+        document.querySelectorAll('[onclick^="updateMainImage"]').forEach(btn => {
+          btn.classList.remove('ring-2', 'ring-gray-900');
+        });
+        thumbnail.classList.add('ring-2', 'ring-gray-900');
+      }
     }
   }
 }

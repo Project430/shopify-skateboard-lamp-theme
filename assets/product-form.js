@@ -8,6 +8,17 @@ class ProductForm extends HTMLFormElement {
     evt.preventDefault();
     
     const submitButton = this.querySelector('[type="submit"]');
+    if (submitButton.disabled) {
+      return;
+    }
+
+    const variantId = this.querySelector('[name="id"]').value;
+    const variant = variants.find(v => v.id.toString() === variantId);
+    
+    if (!variant || !variant.available) {
+      return;
+    }
+
     submitButton.classList.add('loading');
     submitButton.disabled = true;
 

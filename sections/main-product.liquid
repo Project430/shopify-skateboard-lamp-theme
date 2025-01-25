@@ -59,8 +59,18 @@
         {% endfor %}
 
         <div class="mt-8">
-          <button type="submit" class="w-full bg-gray-900 text-white px-6 py-3 rounded-md flex items-center justify-center space-x-2 hover:bg-gray-800 transition-colors">
-            <span class="loading-hidden">Add to Cart</span>
+          <button 
+            type="submit" 
+            class="w-full px-6 py-3 rounded-md flex items-center justify-center space-x-2 transition-colors {% if current_variant.available %}bg-gray-900 hover:bg-gray-800 text-white{% else %}bg-gray-200 text-gray-500 cursor-not-allowed{% endif %}"
+            {% unless current_variant.available %}disabled{% endunless %}
+          >
+            <span class="loading-hidden">
+              {% if current_variant.available %}
+                Add to Cart
+              {% else %}
+                Out of Stock
+              {% endif %}
+            </span>
             <span class="hidden loading-visible">Adding...</span>
           </button>
         </div>
@@ -130,8 +140,24 @@ function handleVariantChange(event) {
   );
   
   if (matchingVariant) {
+    // Update variant ID
     document.getElementById('variant-id').value = matchingVariant.id;
     
+    // Update add to cart button state
+    const submitButton = form.querySelector('[type="submit"]');
+    if (matchingVariant.available) {
+      submitButton.classList.remove('bg-gray-200', 'text-gray-500', 'cursor-not-allowed');
+      submitButton.classList.add('bg-gray-900', 'hover:bg-gray-800', 'text-white');
+      submitButton.querySelector('.loading-hidden').textContent = 'Add to Cart';
+      submitButton.disabled = false;
+    } else {
+      submitButton.classList.remove('bg-gray-900', 'hover:bg-gray-800', 'text-white');
+      submitButton.classList.add('bg-gray-200', 'text-gray-500', 'cursor-not-allowed');
+      submitButton.querySelector('.loading-hidden').textContent = 'Out of Stock';
+      submitButton.disabled = true;
+    }
+    
+    // Update variant image if available
     if (variantImages[matchingVariant.id]) {
       const image = variantImages[matchingVariant.id];
       const mainImage = document.getElementById('main-product-image');

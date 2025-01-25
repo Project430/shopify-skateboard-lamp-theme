@@ -2,8 +2,24 @@
 
 <div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
   <div class="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
-    <div class="aspect-w-1 aspect-h-1 w-full">
-      <img src="{{ product.featured_image | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}" class="w-full h-full object-cover rounded-lg">
+    <!-- Image gallery -->
+    <div class="flex flex-col">
+      <div class="aspect-w-1 aspect-h-1 w-full">
+        <img id="main-product-image" src="{{ product.featured_image | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}" class="w-full h-full object-cover rounded-lg">
+      </div>
+      
+      {% if product.images.size > 1 %}
+        <div class="mt-4 grid grid-cols-4 gap-4">
+          {% for image in product.images %}
+            <button 
+              class="aspect-w-1 aspect-h-1 relative rounded-lg overflow-hidden hover:opacity-75 transition-opacity {% if forloop.first %}ring-2 ring-gray-900{% endif %}"
+              onclick="updateMainImage(this, '{{ image | img_url: 'large' }}', '{{ image.alt | escape }}')"
+            >
+              <img src="{{ image | img_url: '150x' }}" alt="{{ image.alt | escape }}" class="w-full h-full object-cover">
+            </button>
+          {% endfor %}
+        </div>
+      {% endif %}
     </div>
     
     <div class="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
@@ -69,6 +85,21 @@
     </div>
   </div>
 </div>
+
+<script>
+function updateMainImage(thumbnail, newSrc, newAlt) {
+  // Update main image
+  const mainImage = document.getElementById('main-product-image');
+  mainImage.src = newSrc;
+  mainImage.alt = newAlt;
+  
+  // Update thumbnail styling
+  document.querySelectorAll('[onclick^="updateMainImage"]').forEach(btn => {
+    btn.classList.remove('ring-2', 'ring-gray-900');
+  });
+  thumbnail.classList.add('ring-2', 'ring-gray-900');
+}
+</script>
 
 {{ 'product-form.js' | asset_url | script_tag }}
 

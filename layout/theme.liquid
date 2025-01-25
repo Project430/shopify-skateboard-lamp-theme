@@ -12,11 +12,8 @@
   
   {{ content_for_header }}
   
-  <!-- Judge.me Core -->
-  <link href="https://cdn.judge.me/assets/widget_preloader.css" rel="stylesheet">
-  {{ 'judgeme.css' | asset_url | stylesheet_tag }}
-  <!-- End Judge.me Core -->
-
+  {% render 'judgeme' %}
+  
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -62,9 +59,5 @@
   
   {% comment %}Add any additional scripts here{% endcomment %}
   {{ 'shop.js' | asset_url | script_tag }}
-  
-  <!-- Judge.me Widget Script -->
-  <script src="https://cdn.judge.me/widget/shopify/init.js" defer></script>
-  <!-- End Judge.me Script -->
 </body>
 </html>

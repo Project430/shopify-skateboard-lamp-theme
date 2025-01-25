@@ -24,9 +24,18 @@
       <!-- Contact -->
       <div>
         <h3 class="text-lg font-bold mb-4">Contact</h3>
-        <a href="mailto:Sales@lightwheelkit.com" style="text-decoration: underline;" class="text-white hover:text-gray-200">
+        <a href="#" onclick="window.open('mailto:Sales@lightwheelkit.com'); return false;" class="text-white hover:text-gray-200 underline">
           Sales@lightwheelkit.com
         </a>
+        <script>
+          document.addEventListener('DOMContentLoaded', function() {
+            const emailLink = document.querySelector('a[href="#"]');
+            emailLink.addEventListener('click', function(e) {
+              e.preventDefault();
+              window.location.href = 'mailto:Sales@lightwheelkit.com';
+            });
+          });
+        </script>
       </div>
     </div>
 

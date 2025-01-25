@@ -130,6 +130,26 @@
       },
       "safety": {
         "type": "safety",
+        "blocks": {
+          "safety_feature_wedBew": {
+            "type": "safety_feature",
+            "settings": {
+              "title": "Made in France 🇫🇷",
+              "description": "Designed & Hand-assembled in Paris, France"
+            }
+          },
+          "safety_feature_YwXUXP": {
+            "type": "safety_feature",
+            "settings": {
+              "title": "Won Fast Pitch New Venture Competition",
+              "description": "This product idea made it to the podium in California"
+            }
+          }
+        },
+        "block_order": [
+          "safety_feature_wedBew",
+          "safety_feature_YwXUXP"
+        ],
         "settings": {
           "heading": "Safe. Simple. Durable.",
           "description": "With Lightwheel, you can rest assured knowing your skateboard lamp is crafted with high-quality, tested components that prioritize safety."

@@ -9,19 +9,11 @@ class ProductForm extends HTMLFormElement {
     
     const submitButton = this.querySelector('[type="submit"]');
     const variantId = this.querySelector('[name="id"]').value;
-    
-    // Find selected options
-    const selects = this.querySelectorAll('select[name^="options["]');
-    const selectedOptions = Array.from(selects).map(select => select.value);
-    
-    // Check if selected variant is available
-    const selectedVariant = window.variants.find(variant => 
-      variant.id.toString() === variantId && 
-      variant.options.every((option, index) => option === selectedOptions[index])
-    );
+    const variant = window.variants.find(v => v.id.toString() === variantId);
 
-    if (!selectedVariant || !selectedVariant.available) {
-      submitButton.disabled = true;
+    // Check if variant exists and is available
+    if (!variant || !variant.available || submitButton.disabled) {
+      console.log('Variant not available');
       return;
     }
 

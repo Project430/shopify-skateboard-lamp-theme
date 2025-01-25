@@ -21,7 +21,7 @@
           <div class="mt-6">
             <h3 class="text-sm font-medium text-gray-900">{{ option.name }}</h3>
             <div class="mt-2">
-              <select name="options[{{ option.name }}]" class="block w-full rounded-md border-gray-300 py-2">
+              <select name="options[{{ option.name }}]" class="block w-full rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 hover:border-gray-400 transition-colors">
                 {% for value in option.values %}
                   <option 
                     value="{{ value }}"

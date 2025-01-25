@@ -1,7 +1,18 @@
 {% assign current_variant = product.selected_or_first_available_variant %}
 
 <script>
+  // Add inventory data to variant information
   window.variants = {{ product.variants | json }};
+  window.variantInventory = {
+    {% for variant in product.variants %}
+      {{ variant.id }}: {
+        available: {% if variant.inventory_quantity > 0 or variant.inventory_policy == 'continue' %}true{% else %}false{% endif %},
+        inventory_quantity: {{ variant.inventory_quantity | default: 0 }},
+        inventory_management: {{ variant.inventory_management | json }},
+        inventory_policy: {{ variant.inventory_policy | json }}
+      }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  };
 </script>
 
 <div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
@@ -53,7 +64,7 @@
                     value="{{ value }}"
                     {% if current_variant.options[forloop.parentloop.index0] == value %}selected="selected"{% endif %}
                   >
-                    {{ value }}
+                    {{ value }}{% unless variant.available %} - Out of stock{% endunless %}
                   </option>
                 {% endfor %}
               </select>
@@ -77,6 +88,10 @@
             <span class="hidden loading-visible">Adding...</span>
           </button>
         </div>
+
+        {% if current_variant.inventory_quantity <= 0 and current_variant.inventory_policy != 'continue' %}
+          <p class="mt-3 text-sm text-red-600">This variant is currently out of stock</p>
+        {% endif %}
       </form>
 
       <div class="mt-10">
@@ -141,12 +156,18 @@ function handleVariantChange(event) {
   );
   
   if (matchingVariant) {
+    const inventory = window.variantInventory[matchingVariant.id];
+    const isAvailable = inventory.available && 
+      (inventory.inventory_management === null || 
+       inventory.inventory_quantity > 0 || 
+       inventory.inventory_policy === 'continue');
+    
     // Update variant ID
     document.getElementById('variant-id').value = matchingVariant.id;
     
     // Update add to cart button state
     const submitButton = form.querySelector('[type="submit"]');
-    if (matchingVariant.available) {
+    if (isAvailable) {
       submitButton.classList.remove('bg-gray-200', 'text-gray-500', 'cursor-not-allowed');
       submitButton.classList.add('bg-gray-900', 'hover:bg-gray-800', 'text-white');
       submitButton.querySelector('.loading-hidden').textContent = 'Add to Cart';
@@ -175,6 +196,20 @@ function handleVariantChange(event) {
     }
   }
 }
+
+// Initialize variant state on page load
+window.addEventListener('DOMContentLoaded', (event) => {
+  const currentVariantId = document.getElementById('variant-id').value;
+  const inventory = window.variantInventory[currentVariantId];
+  const submitButton = document.querySelector('[type="submit"]');
+  
+  if (!inventory.available) {
+    submitButton.classList.remove('bg-gray-900', 'hover:bg-gray-800', 'text-white');
+    submitButton.classList.add('bg-gray-200', 'text-gray-500', 'cursor-not-allowed');
+    submitButton.querySelector('.loading-hidden').textContent = 'Out of Stock';
+    submitButton.disabled = true;
+  }
+});
 </script>
 
 {{ 'product-form.js' | asset_url | script_tag }}

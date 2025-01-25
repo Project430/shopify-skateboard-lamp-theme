@@ -1,6 +1,6 @@
 <!-- JudgeMe Reviews Widget -->
-<div style='{{ jm_style }}' class='jdgm-widget jdgm-preview-badge'>
-  {{ shop.metafields.judgeme.badge }}
+<div style='{{ jm_style }}' class='jdgm-all-reviews-widget' data-id='{{ product.id }}'>
+  {{ shop.metafields.judgeme.reviews_tab }}
 </div>
 
 <section class="py-20 bg-gray-50">
@@ -11,7 +11,7 @@
         <img src="{{ 'etsy-logo.png' | asset_url }}" alt="Etsy Reviews" class="h-8">
       {% endif %}
     </div>
-    
+
     {% if section.settings.subheading != blank %}
       <p class="text-gray-600 text-center mb-16 max-w-2xl mx-auto">{{ section.settings.subheading }}</p>
     {% endif %}
@@ -98,7 +98,7 @@
 
 {% schema %}
 {
-  "name": "Etsy Reviews",
+  "name": "Reviews Section",
   "settings": [
     {
       "type": "text",
@@ -110,7 +110,7 @@
       "type": "text",
       "id": "subheading",
       "label": "Subheading",
-      "default": "See what our customers are saying about us on Etsy"
+      "default": "See what our customers are saying about us"
     },
     {
       "type": "checkbox",
@@ -191,7 +191,7 @@
   ],
   "presets": [
     {
-      "name": "Etsy Reviews",
+      "name": "Reviews Section",
       "settings": {
         "show_etsy_logo": true,
         "show_etsy_source": true,

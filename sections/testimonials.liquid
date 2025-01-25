@@ -1,8 +1,12 @@
-<!-- Start of Judge.me code -->
-<div class="jdgm-widget jdgm-all-reviews-widget">
-  {{ shop.metafields.judgeme.all_reviews_html }}
-</div>
-<!-- End of Judge.me code -->
+{% if product %}
+  <div class="jdgm-widget jdgm-reviews-widget" data-id="{{ product.id }}" data-auto-install="false">
+    {{ shop.metafields.judgeme.widgets }}
+  </div>
+{% else %}
+  <div class="jdgm-widget jdgm-all-reviews-widget" data-from="0" data-per-page="8">
+    {{ shop.metafields.judgeme.widgets }}
+  </div>
+{% endif %}
 
 <section class="py-20 bg-gray-50">
   <div class="container mx-auto px-4">
@@ -20,6 +24,7 @@
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
       {% for block in section.blocks %}
         <div class="bg-white p-6 rounded-lg shadow-sm" {{ block.shopify_attributes }}>
+          <!-- Rest of your existing testimonials code -->
           <!-- Star Rating -->
           <div class="flex mb-4">
             {% assign rating = block.settings.rating | default: 5 %}

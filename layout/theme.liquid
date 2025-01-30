@@ -34,6 +34,11 @@
   <!-- Alpine.js -->
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
   
+  <!-- Blog specific assets -->
+  {{ 'section-main-blog.css' | asset_url | stylesheet_tag }}
+  {{ 'section-main-article.css' | asset_url | stylesheet_tag }}
+  {{ 'share.js' | asset_url | script_tag }}
+  
   <!-- Custom CSS -->
   {{ 'custom.css' | asset_url | stylesheet_tag }}
   
@@ -41,7 +46,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
-<body class="h-full font-body" x-data="{ mobileMenuOpen: false }">
+<body class="h-full font-body bg-white">
   <div class="min-h-screen flex flex-col">
     {% section 'announcement-bar' %}
     {% section 'header' %}

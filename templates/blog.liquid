@@ -1,0 +1,61 @@
+{%- paginate blog.articles by 9 -%}
+  <div class="page-width">
+    <header class="section-header text-center">
+      <h1 class="section-header__title h2">{{ blog.title }}</h1>
+    </header>
+
+    <div class="grid grid--uniform">
+      {%- for article in blog.articles -%}
+        <div class="grid__item medium-up--one-third">
+          <article class="article">
+            {%- if article.image -%}
+              <div class="article__image-container">
+                <a href="{{ article.url }}">
+                  {{ article.image | img_url: '600x400', crop: 'center' | img_tag: article.title, 'article__image' }}
+                </a>
+              </div>
+            {%- endif -%}
+
+            <div class="article__content">
+              <header class="article__header">
+                <h2 class="h3">
+                  <a href="{{ article.url }}">{{ article.title }}</a>
+                </h2>
+                <p class="article__author">
+                  {{ article.published_at | date: "%B %d, %Y" }}
+                </p>
+              </header>
+
+              <div class="article__excerpt rte">
+                {%- if article.excerpt.size > 0 -%}
+                  {{ article.excerpt }}
+                {%- else -%}
+                  {{ article.content | strip_html | truncatewords: 30 }}
+                {%- endif -%}
+              </div>
+
+              <a href="{{ article.url }}" class="btn">Read more</a>
+            </div>
+          </article>
+        </div>
+      {%- else -%}
+        <div class="grid__item text-center">
+          <p>No articles found</p>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    {%- if paginate.pages > 1 -%}
+      <nav class="pagination" role="navigation">
+        {{ paginate | default_pagination }}
+      </nav>
+    {%- endif -%}
+  </div>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Blog pages",
+  "settings": []
+}
+{% endschema %}

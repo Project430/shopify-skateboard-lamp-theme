@@ -7,28 +7,61 @@
       </p>
     </header>
 
-    {%- if article.image -%}
-      <div class="article__featured-image-wrapper">
-        {{ article.image | img_url: '1400x' | img_tag: article.title, 'article__featured-image' }}
-      </div>
-    {%- endif -%}
+    <div class="article-container" style="max-width: 800px; margin: 0 auto; padding: 20px;">
+      {%- if article.image -%}
+        <div class="article__featured-image-wrapper" style="margin-bottom: 2rem;">
+          <img
+            src="{{ article.image | img_url: '800x' }}"
+            alt="{{ article.title }}"
+            class="article__featured-image"
+            style="width: 100%; height: auto; display: block;"
+            loading="lazy"
+          >
+        </div>
+      {%- endif -%}
 
-    <div class="article__content rte">
-      {{ article.content }}
+      <div class="article__content rte" style="font-size: 16px; line-height: 1.6; margin-bottom: 2rem;">
+        {{ article.content }}
+      </div>
+
+      <div class="article__sharing" style="margin-top: 2rem; border-top: 1px solid #e8e8e8; padding-top: 1rem;">
+        <div class="social-sharing" style="display: flex; gap: 1rem; justify-content: center;">
+          <a target="_blank" href="//www.facebook.com/sharer.php?u={{ shop.url | append: article.url }}" class="social-sharing__link" style="text-decoration: none;">
+            <span class="icon icon-facebook" style="width: 24px; height: 24px;">
+              {% include 'icon-facebook' %}
+            </span>
+            <span class="social-sharing__title" style="font-size: 14px;">Share</span>
+          </a>
+
+          <a target="_blank" href="//twitter.com/share?text={{ article.title | url_param_escape }}&url={{ shop.url | append: article.url }}" class="social-sharing__link" style="text-decoration: none;">
+            <span class="icon icon-twitter" style="width: 24px; height: 24px;">
+              {% include 'icon-twitter' %}
+            </span>
+            <span class="social-sharing__title" style="font-size: 14px;">Tweet</span>
+          </a>
+
+          <a target="_blank" href="//pinterest.com/pin/create/button/?url={{ shop.url | append: article.url }}&media={{ article | img_url: '1024x1024' }}&description={{ article.title | url_param_escape }}" class="social-sharing__link" style="text-decoration: none;">
+            <span class="icon icon-pinterest" style="width: 24px; height: 24px;">
+              {% include 'icon-pinterest' %}
+            </span>
+            <span class="social-sharing__title" style="font-size: 14px;">Pin it</span>
+          </a>
+        </div>
+      </div>
     </div>
 
     {%- if blog.comments_enabled? -%}
-      <div id="comments" class="article__comments">
+      <div id="comments" class="article__comments" style="max-width: 800px; margin: 2rem auto; padding: 20px;">
         {%- if article.comments_count > 0 -%}
           <h2 class="h3">{{ 'blogs.comments.comments_with_count' | t: count: article.comments_count }}</h2>
 
           {%- paginate article.comments by 5 -%}
             {%- for comment in article.comments -%}
-              <div class="comment">
-                <div class="comment__content">
+              <div class="comment" style="margin-bottom: 1.5rem; padding: 1rem; background: #f9f9f9; border-radius: 4px;">
+                <div class="comment__content" style="margin-bottom: 0.5rem;">
                   {{ comment.content }}
                 </div>
-                <div class="comment__meta">
+                <div class="comment__meta" style="font-size: 14px; color: #666;">
                   {{ comment.author }} on {{ comment.created_at | date: format: 'month_day_year' }}
                 </div>
               </div>
@@ -42,7 +75,7 @@
           {%- endpaginate -%}
         {%- endif -%}
 
-        <div class="comment-form">
+        <div class="comment-form" style="margin-top: 2rem;">
           {%- form 'new_comment', article -%}
             <h2 class="h3">{{ 'blogs.comments.title' | t }}</h2>
 

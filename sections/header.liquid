@@ -13,8 +13,28 @@
       <!-- Navigation -->
       <nav class="hidden md:flex space-x-8">
         {% for link in linklists.main-menu.links %}
-          <a href="{{ link.url }}" class="text-gray-600 hover:text-primary">{{ link.title }}</a>
+          {% if link.links != blank %}
+            <div class="relative group">
+              <button class="text-gray-600 hover:text-primary">
+                {{ link.title }}
+              </button>
+              <div class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden group-hover:block">
+                {% for childlink in link.links %}
+                  <a href="{{ childlink.url }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    {{ childlink.title }}
+                  </a>
+                {% endfor %}
+              </div>
+            </div>
+          {% else %}
+            <a href="{{ link.url }}" class="text-gray-600 hover:text-primary">{{ link.title }}</a>
+          {% endif %}
         {% endfor %}
+        
+        <!-- Blog Link -->
+        {% if section.settings.show_blog %}
+          <a href="/blogs/upcycling-skateboards-1" class="text-gray-600 hover:text-primary">Blog</a>
+        {% endif %}
       </nav>
 
       <!-- Cart -->
@@ -33,6 +53,12 @@
       "type": "image_picker",
       "id": "logo",
       "label": "Logo"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_blog",
+      "label": "Show Blog Link",
+      "default": true
     }
   ]
 }

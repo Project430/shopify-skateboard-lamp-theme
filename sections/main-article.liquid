@@ -13,12 +13,107 @@
       <div class="aspect-w-16 aspect-h-9 mb-8">
         <img src="{{ article.image | img_url: '1400x' }}"
              alt="{{ article.title }}"
-             class="w-full h-full object-cover rounded-lg">
+             class="w-full h-full object-cover rounded-lg shadow-lg">
       </div>
     {% endif %}
   </header>
 
-  <div class="prose prose-lg max-w-4xl mx-auto">
+  <div class="prose prose-lg max-w-4xl mx-auto article-content">
+    <!-- Article content with enhanced styling for injected HTML -->
+    <style>
+      .article-content {
+        color: #374151;
+        line-height: 1.8;
+      }
+      .article-content h2 {
+        font-size: 1.875rem;
+        font-weight: 700;
+        margin-top: 2.5rem;
+        margin-bottom: 1.25rem;
+        color: #111827;
+      }
+      .article-content h3 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        color: #1F2937;
+      }
+      .article-content p {
+        margin-bottom: 1.5rem;
+      }
+      .article-content ul, .article-content ol {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        padding-left: 1.5rem;
+      }
+      .article-content ul {
+        list-style-type: disc;
+      }
+      .article-content ol {
+        list-style-type: decimal;
+      }
+      .article-content li {
+        margin-bottom: 0.5rem;
+      }
+      .article-content a {
+        color: #2563EB;
+        text-decoration: underline;
+      }
+      .article-content a:hover {
+        color: #1D4ED8;
+      }
+      .article-content blockquote {
+        border-left: 4px solid #E5E7EB;
+        padding-left: 1rem;
+        margin-left: 0;
+        margin-right: 0;
+        font-style: italic;
+        color: #4B5563;
+      }
+      .article-content img {
+        border-radius: 0.5rem;
+        margin: 2rem auto;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      }
+      .article-content code {
+        background-color: #F3F4F6;
+        padding: 0.2rem 0.4rem;
+        border-radius: 0.25rem;
+        font-size: 0.875em;
+      }
+      .article-content pre {
+        background-color: #1F2937;
+        color: #F3F4F6;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        overflow-x: auto;
+        margin: 1.5rem 0;
+      }
+      .article-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 2rem 0;
+      }
+      .article-content th, .article-content td {
+        border: 1px solid #E5E7EB;
+        padding: 0.75rem;
+        text-align: left;
+      }
+      .article-content th {
+        background-color: #F9FAFB;
+        font-weight: 600;
+      }
+      .article-content figure {
+        margin: 2rem 0;
+      }
+      .article-content figcaption {
+        text-align: center;
+        color: #6B7280;
+        font-size: 0.875rem;
+        margin-top: 0.5rem;
+      }
+    </style>
     {{ article.content }}
   </div>
 

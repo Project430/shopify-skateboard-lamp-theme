@@ -9,7 +9,11 @@
   {% if page_description %}
     <meta name="description" content="{{ page_description | escape }}">
   {% endif %}
-  
+
+  {% if template.name == 'article' and article.metafields.global.description_tag %}
+  <meta name="description" content="{{ article.metafields.global.description_tag }}">
+{% endif %}
+
   {{ content_for_header }}
   
   <!-- Tailwind CSS -->
